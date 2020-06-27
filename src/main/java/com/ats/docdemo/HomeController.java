@@ -41,7 +41,7 @@ System.err.println("cat List " +assetList.toString());
 		
 		model.addAttribute("serverTime", formattedDate );
 		
-		return "home";
+		return "3_col_page";
 	}
 	
 }
