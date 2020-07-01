@@ -28,9 +28,9 @@
 	<beans:bean id="multipartResolver"
 		class="org.springframework.web.multipart.commons.CommonsMultipartResolver" />
 		
-		<mvc:interceptors>
+		<!-- <mvc:interceptors>
 		<beans:bean class="com.ats.docdemo.CheckUserInterceptor" />
-	</mvc:interceptors>
+	</mvc:interceptors> -->
 	
 	
 </beans:beans>
