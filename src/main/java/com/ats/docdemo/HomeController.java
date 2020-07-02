@@ -15,6 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -53,8 +54,34 @@ public class HomeController {
 
 		model.addAttribute("serverTime", formattedDate);
 
-		return "3_col_page";
+		return "1_col_page";
 	}
+	
+	
+	@RequestMapping(value = "/{pageNumber}", method = RequestMethod.GET)
+	public String home(Locale locale, Model model,@PathVariable int pageNumber) {
+		logger.info("Welcome home! The client locale is {}.", locale);
+
+		/*
+		 * AssetCategory[] assetArr =
+		 * Constants.getRestTemplate().getForObject(Constants.url +
+		 * "/getAllAssetCategory", AssetCategory[].class); List<AssetCategory> assetList
+		 * = new ArrayList<AssetCategory>(Arrays.asList(assetArr));
+		 * System.err.println("cat List " + assetList.toString());
+		 */
+		Date date = new Date();
+		DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG, locale);
+		String formattedDate = dateFormat.format(date);
+		model.addAttribute("serverTime", formattedDate);
+if(pageNumber==1) {
+	return "1_col_page";
+}else if(pageNumber==2) {
+	return "2_col_page";
+}else {
+	return "3_col_page";
+}
+	}
+	
 	// submitInsertBank
 
 	@RequestMapping(value = "/submitInsertBank", method = RequestMethod.POST)

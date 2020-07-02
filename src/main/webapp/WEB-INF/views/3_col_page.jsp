@@ -43,13 +43,6 @@
 				<!-- Form validation -->
 				<div class="row">
 					<div class="col-md-12">
-						<!-- Title -->
-						<!-- <div class="mb-3">
-							<h6 class="mb-0 font-weight-semibold">Hidden labels</h6>
-							<span class="text-muted d-block">Inputs with empty values</span>
-						</div> -->
-						<!-- /title -->
-
 
 						<div class="card">
 
@@ -57,14 +50,20 @@
 								<table width="100%">
 									<tr width="100%">
 										<td width="60%"><h5 class="pageTitle">
-												<i class="icon-list-unordered"></i>3 Column Form Input
+												<i class="icon-list-unordered"></i>3 Column Form Input (1-3)*3
 											</h5></td>
 										<td width="40%" align="right">
-											<%-- <a
-									href="${pageContext.request.contextPath}/showAddKra?empId=${editKra.exVar3}&finYrId=${editKra.exVar2}"
+										
+									<a
+									href="${pageContext.request.contextPath}/2"
 									class="breadcrumb-elements-item">
-										<button type="button" class="btn btn-primary">KRA List </button>
-								</a>  --%>
+										<button type="button" class="btn btn-primary">2 Column Page </button>
+								</a>
+								<a
+									href="${pageContext.request.contextPath}/1"
+									class="breadcrumb-elements-item">
+										<button type="button" class="btn btn-primary">1 Column Page </button>
+								</a>
 										</td>
 									</tr>
 								</table>
@@ -118,7 +117,7 @@
 											</span>:
 											</label>
 											<div class="col-lg-3 float">
-												<input type="text" style="text-transform: capitalize;" class="form-control" value="${bank.name}"
+												<input type="text" style="text-transform: capitalize;" class="form-control maxlength-badge-position" value="${bank.name}"
 													placeholder="Enter Bank Name" id="bankName" name="bankName"
 													autocomplete="off" onchange="trim(this)" maxlength="100">
 												<span class="validation-invalid-label" id="error_bank"
@@ -141,7 +140,7 @@
 											</span>:
 											</label>
 											<div class="col-lg-3 float">
-												<input type="text" class="form-control maxlength-options"
+												<input type="text" class="form-control maxlength-badge-position"
 													value="${bank.ifscCode}" placeholder="Enter IFSC Code"
 													id="ifscCode" maxlength="11" style="text-transform: uppercase;" name="ifscCode"
 													autocomplete="off" onchange="trim(this)"> <span
@@ -184,7 +183,7 @@
 													for="mobile">Mobile No.
 												</label>
 												<div class="col-lg-3">
-													<input type="text" class="form-control maxlength-options"
+													<input type="text" class="form-control maxlength-badge-position"
 														value="${company.cpMobile}" id="mobile"
 														onchange="trim(this)" placeholder="Mobile No."
 														name="mobile" autocomplete="off" maxlength="10">
@@ -356,7 +355,7 @@
 											</span>:
 											</label>
 											<div class="col-lg-3 float">
-												<input type="text" class="form-control maxlength-options alhanumeric" style="text-transform: uppercase;" value="${bank.name}"
+												<input type="text" class="form-control maxlength-badge-position alhanumeric" style="text-transform: uppercase;" value="${bank.name}"
 													placeholder="Enter PAN No" id="pan" name="pan"
 													autocomplete="off" onchange="trim(this)" maxlength="10">
 												<span class="validation-invalid-label" id="error_pan"
