@@ -17,10 +17,10 @@ $('.datatable-fixed-left_custom').DataTable({
 			scrollX : true,
 			scrollY : '65vh',
 			scrollCollapse : true,
-			paging : false,
+			paging : true,
 			fixedColumns : {
-				leftColumns : 1,
-				rightColumns : 0
+				leftColumns : 2,
+				rightColumns : 1
 			}
 
 		});

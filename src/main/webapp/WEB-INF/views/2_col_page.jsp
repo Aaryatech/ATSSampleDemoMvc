@@ -285,16 +285,60 @@
 										</span>:
 										</label>
 										<div class="col-lg-4 float">
-											<img id="output" width="150"
+											<div class="image-cropper-container">
+								
+											<img id="output" width="150"  class="cropper"
 												src="${imgPath}${asset.assetPurImage}" /> <input type="file"
 												accept="image/*" name="docImg" id="docImg"
 												value="${asset.assetPurImage}"
 												accept=".jpg,.png,.gif,.jpeg,.bmp"
-												onchange="loadFile(event)"><span
+												onchange="loadFile(event)"></div><span
 												class="form-text text-muted">Only
 												.jpg,.png,.gif,.jpeg,.bmp</span> <span
 												class="validation-invalid-label" id="error_docImg"
 												style="display: none;">This field is required.</span>
+												
+												
+								<div class="form-group demo-cropper-toolbar">
+									<label class="font-weight-semibold">Toolbar:</label>
+									<div class="btn-group btn-group-justified">
+										<div class="btn-group">
+											<button type="button" class="btn bg-blue btn-icon" data-method="setDragMode" data-option="move" title="Move">
+												<span class="icon-move"></span>
+											</button>
+										</div>
+
+										<div class="btn-group">
+											<button type="button" class="btn bg-blue btn-icon" data-method="setDragMode" data-option="crop" title="Crop">
+												<span class="icon-crop2"></span>
+											</button>
+										</div>
+
+										<div class="btn-group">
+											<button type="button" class="btn bg-blue btn-icon" data-method="move" data-option="-10" data-second-option="0" title="Move Left">
+												<span class="icon-arrow-left13"></span>
+											</button>
+										</div>
+
+										<div class="btn-group">
+											<button type="button" class="btn bg-blue btn-icon" data-method="move" data-option="10" data-second-option="0" title="Move Right">
+												<span class="icon-arrow-right14"></span>
+											</button>
+										</div>
+
+										<div class="btn-group">
+											<button type="button" class="btn bg-blue btn-icon" data-method="move" data-option="0" data-second-option="-10" title="Move Up">
+												<span class="icon-arrow-up13"></span>
+											</button>
+										</div>
+
+										<div class="btn-group">
+											<button type="button" class="btn bg-blue btn-icon" data-method="move" data-option="0" data-second-option="10" title="Move Down">
+												<span class="icon-arrow-down132"></span>
+											</button>
+										</div>
+									</div>
+								</div>
 										</div>
 
 									</div>
@@ -375,7 +419,18 @@
 			<!-- Footer -->
 			<jsp:include page="/WEB-INF/views/include/footer.jsp"></jsp:include>
 			<!-- /footer -->
+<!-- Core JS files -->
+	<script src="http://demo.interface.club/limitless/demo/Template/global_assets/js/main/jquery.min.js"></script>
+	<script src="http://demo.interface.club/limitless/demo/Template/global_assets/js/main/bootstrap.bundle.min.js"></script>
+	<script src="http://demo.interface.club/limitless/demo/Template/global_assets/js/plugins/loaders/blockui.min.js"></script>
+	<!-- /core JS files -->
 
+	<!-- Theme JS files -->
+	<script src="http://demo.interface.club/limitless/demo/Template/global_assets/js/plugins/media/cropper.min.js"></script>
+	<script src="http://demo.interface.club/limitless/demo/Template/global_assets/js/plugins/forms/styling/switchery.min.js"></script>
+
+	<script src="http://demo.interface.club/limitless/demo/Template/global_assets/js/demo_pages/extension_image_cropper.js"></script>
+	<!-- /theme JS files -->
 		</div>
 		<!-- /main content -->
 

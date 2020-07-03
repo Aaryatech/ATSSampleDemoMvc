@@ -117,7 +117,7 @@
 											</span>:
 											</label>
 											<div class="col-lg-3 float">
-												<input type="text" style="text-transform: capitalize;" class="form-control maxlength-badge-position" value="${bank.name}"
+												<input type="text"  style="text-transform: capitalize;" class="form-control maxlength-badge-position" value="${bank.name}"
 													placeholder="Enter Bank Name" id="bankName" name="bankName"
 													autocomplete="off" onchange="trim(this)" maxlength="100">
 												<span class="validation-invalid-label" id="error_bank"
@@ -129,7 +129,7 @@
 											<div class="col-lg-3 float">
 												<input type="text" class="form-control maxlength-badge-position numbersOnly"
 													value="${bank.micrCode}" placeholder="Enter MICR Code"
-													id="micrCode" maxlength="9" name="micrCode"
+													id="micrCode" maxlength="9" name="micrCode" 
 													autocomplete="off" onchange="trim(this)"> <span
 													class="validation-invalid-label" id="error_micrCode"
 													style="display: none;">This field is required.</span>
@@ -402,6 +402,59 @@
 									
 									
 								</div>
+											<div class="form-group row">
+
+										<label
+											class="col-form-label text-info font-weight-bold col-lg-2"
+											for="doc">Select File<span class="text-danger">*</span>:
+										</label>
+										<div class="col-lg-4">
+											<input type="file" class="form-control" id="doc" name="doc"
+												accept=".docx,.xlsx,.pdf"> <span
+												class="form-text text-muted">Only .docx,.xlsx,.pdf</span> <span
+												class="validation-invalid-label" id="error_doc1"
+												style="display: none;">This field is required.</span>
+
+
+
+										</div>
+
+										<label
+											class="col-form-label text-info font-weight-bold  col-lg-2 float"
+											for="docImg">Select Image<span class="text-danger">*
+										</span>:
+										</label>
+										<div class="col-lg-4 float">
+											<img id="output" width="150"
+												src="${imgPath}${asset.assetPurImage}" /> <input type="file"
+												accept="image/*" name="docImg" id="docImg"
+												value="${asset.assetPurImage}"
+												accept=".jpg,.png,.gif,.jpeg,.bmp"
+												onchange="loadFile(event)"><span
+												class="form-text text-muted">Only
+												.jpg,.png,.gif,.jpeg,.bmp</span> <span
+												class="validation-invalid-label" id="error_docImg"
+												style="display: none;">This field is required.</span>
+										</div>
+
+									</div>
+									
+									<div class="form-group row">
+										<label
+											class="col-form-label text-info font-weight-bold col-lg-2 float"
+											for="bank">Bank Name <span class="text-danger">*
+										</span>:
+										</label>
+										<div class="col-lg-10 float">
+											<input type="text" style="text-transform: capitalize;"
+												class="form-control maxlength-badge-position"
+												value="${bank.name}" placeholder="Enter Bank Name"
+												id="bankName" name="bankName" autocomplete="off"
+												onchange="trim(this)" maxlength="100"> <span
+												class="validation-invalid-label" id="error_bank"
+												style="display: none;">This field is required.</span>
+										</div>
+										</div>
 
 									<div class="form-group row mb-0">
 										<div style="margin: 0 auto;">
@@ -691,6 +744,24 @@
 	            alwaysShow: true,
 	            placement: 'top'
 	        });
+		 
+		 $('#submtbtn').on('click', function() {
+				$.blockUI({ 
+				  //  message: '&lt;i class="icon-spinner4 spinner">&lt;/i>',
+				    timeout: 4000, //unblock after 2 seconds
+				    overlayCSS: {
+				        backgroundColor: '#1b2024',
+				        opacity: 0.8,
+				        cursor: 'wait'
+				    },
+				    css: {
+				        border: 0,
+				        color: '#fff',
+				        padding: 0,
+				        backgroundColor: 'transparent'
+				    }
+				});
+			});
 	</script>
 
 
