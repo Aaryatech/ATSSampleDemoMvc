@@ -10,7 +10,7 @@
 
 
 <body>
-	<c:url value="/getCatList" var="getCatList11"></c:url>
+	<c:url value="/getCatList" var="getCatList"></c:url>
 	<!-- Main navbar -->
 	<jsp:include page="/WEB-INF/views/include/header.jsp"></jsp:include>
 	<!-- /main navbar -->

@@ -68,12 +68,12 @@
 											</h5></td>
 										<td width="40%" align="right">
 											<a
-									href="${pageContext.request.contextPath}/3"
+									href="${pageContext.request.contextPath}/getPage/3"
 									class="breadcrumb-elements-item">
 										<button type="button" class="btn btn-primary">3 Column Page </button>
 								</a>
 								<a
-									href="${pageContext.request.contextPath}/1"
+									href="${pageContext.request.contextPath}/getPage/1"
 									class="breadcrumb-elements-item">
 										<button type="button" class="btn btn-primary">1 Column Page </button>
 								</a>

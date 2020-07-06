@@ -15,6 +15,7 @@
 </head>
 
 <body>
+	<c:url value="/getSingleCategory" var="getSingleCategory"></c:url>
 
 	<!-- Main navbar -->
 	<jsp:include page="/WEB-INF/views/include/header.jsp"></jsp:include>
@@ -50,20 +51,27 @@
 								<table width="100%">
 									<tr width="100%">
 										<td width="60%"><h5 class="pageTitle">
-												<i class="icon-list-unordered"></i>3 Column Form Input (1-3)*3
+												<i class="icon-list-unordered"></i>3 bb Column Form Input (1-3)*3
 											</h5></td>
 										<td width="40%" align="right">
 										
 									<a
-									href="${pageContext.request.contextPath}/2"
+									href="${pageContext.request.contextPath}/getPage/2"
 									class="breadcrumb-elements-item">
 										<button type="button" class="btn btn-primary">2 Column Page </button>
 								</a>
 								<a
-									href="${pageContext.request.contextPath}/1"
+									href="${pageContext.request.contextPath}/getPage/1"
 									class="breadcrumb-elements-item">
 										<button type="button" class="btn btn-primary">1 Column Page </button>
 								</a>
+								
+								<a
+									href="${pageContext.request.contextPath}/showAllControlPage"
+									class="breadcrumb-elements-item">
+										<button type="button" class="btn btn-primary">All Control Page</button>
+								</a>
+								
 										</td>
 									</tr>
 								</table>
@@ -183,7 +191,7 @@
 													for="mobile">Mobile No.
 												</label>
 												<div class="col-lg-3">
-													<input type="text" class="form-control maxlength-badge-position"
+													<input type="text" class="form-control maxlength-badge-position numbersOnly"
 														value="${company.cpMobile}" id="mobile"
 														onchange="trim(this)" placeholder="Mobile No."
 														name="mobile" autocomplete="off" maxlength="10">
@@ -216,18 +224,18 @@
 												</div>
 												
 													<label class="col-form-label text-info font-weight-bold col-lg-1"
-													for="empType">Medium Select<span class="text-danger">*</span>:
+													for="empType">Medium Select ${catId}<span class="text-danger">*</span>:
 												</label>
 												<div class="col-lg-3">
 													<select name="empType"
 														data-placeholder="Select Medium" id="empType"
 														class="form-control form-control-select2 select2-hidden-accessible">
-														<option value="">Select Employee Type</option>
-														<option value="1" ${emp.empType==1 ? selected : ''}>Yearly
-															</option>
-														<option value="2" ${emp.empType==2 ? selected : ''}>Monthly
-															</option>
-														<option value="3" ${emp.empType==3 ? selected : ''}>Other</option>
+														<c:forEach items="${assetCatList}" var="assetCat" varStatus="count">
+														<option value="${assetCat.assetCatId}" ${assetCat.assetCatId == catId ? 'selected' : ''}>${assetCat.assetCatId}</option>
+														</c:forEach>
+														
+														
+														
 													</select> <span class="hidedefault   validation-invalid-label"
 														style="display: none;" id="error_empType">This
 														field is required.</span>
@@ -243,6 +251,21 @@
 														multiple="multiple"
 														class="form-control form-control-sm select"
 														data-container-css-class="select-sm" data-fouc>
+														
+														<c:forEach items="${locationList}" var="locationList">
+															<c:set value="0" var="find"></c:set>
+															<c:forEach items="${locationIds}" var="locationIds">
+																<c:if test="${locationList.locId==locationIds}">
+																	<option selected="selected"
+																		value="${locationList.locId}">${locationList.locName}</option>
+																	<c:set value="1" var="find"></c:set>
+																</c:if>
+															</c:forEach>
+															<c:if test="${find==0}">
+																<option value="${locationList.locId}">${locationList.locName}</option>
+															</c:if>
+														</c:forEach>
+														
 														
 														<option value="1">JAVA</option>
 														<option value="2">PYTHON</option>
@@ -463,6 +486,12 @@
 												id="submtbtn">
 												Submit <i class="icon-paperplane ml-2"></i>
 											</button>
+											<button type="button" data-toggle="modal" data-target="#modal_form_vertical" class="btn ml-1 btn-outline-primary border-transparent"
+												id="data_view_button">
+												View Ajax Data
+											</button>
+											
+											
 											<a href="${pageContext.request.contextPath}/showBankList"><button
 													type="button" class="btn btn-light">
 													<i class="${sessionScope.cancelIcon}" aria-hidden="true"></i>
@@ -470,6 +499,100 @@
 												</button></a>
 										</div>
 									</div>
+							<!-- Vertical Modal -->		
+				<div class="col-md-4" style="margin: 20px 0 0 0;">
+										
+										<!-- Vertical form modal -->
+										<div id="modal_form_vertical" class="modal fade" tabindex="-1">
+											<div class="modal-dialog">
+												<div class="modal-content">
+													<div class="modal-header">
+														<h5 class="modal-title" id="mod_title">Vertical form</h5>
+														<button type="button" class="close" data-dismiss="modal">&times;</button>
+													</div>
+
+												
+														<div class="modal-body">
+															<div class="form-group">
+																<div class="row">
+																	<div class="col-sm-6">
+																		<label>First name</label> <input type="text" id="f_name" readonly
+																			placeholder="First Name" class="form-control">
+																	</div>
+
+																	<div class="col-sm-6">
+																		<label>Last name</label> <input type="text" id="l_name" readonly
+																			placeholder="Last Name" class="form-control">
+																	</div>
+																</div>
+															</div>
+
+															<div class="form-group">
+																<div class="row">
+																	<div class="col-sm-6">
+																		<label>Address line 1</label> <input type="text"
+																			placeholder="Ring street 12" class="form-control">
+																	</div>
+
+																	<div class="col-sm-6">
+																		<label>Address line 2</label> <input type="text"
+																			placeholder="building D, flat #67"
+																			class="form-control">
+																	</div>
+																</div>
+															</div>
+
+															<div class="form-group">
+																<div class="row">
+																	<div class="col-sm-4">
+																		<label>City</label> <input type="text"
+																			placeholder="Munich" class="form-control">
+																	</div>
+
+																	<div class="col-sm-4">
+																		<label>State/Province</label> <input type="text"
+																			placeholder="Bayern" class="form-control">
+																	</div>
+
+																	<div class="col-sm-4">
+																		<label>ZIP code</label> <input type="text"
+																			placeholder="1031" class="form-control">
+																	</div>
+																</div>
+															</div>
+
+															<div class="form-group">
+																<div class="row">
+																	<div class="col-sm-6">
+																		<label>Email</label> <input type="text"
+																			placeholder="eugene@kopyov.com" class="form-control">
+																		<span class="form-text text-muted">name@domain.com</span>
+																	</div>
+
+																	<div class="col-sm-6">
+																		<label>Phone #</label> <input type="text"
+																			placeholder="+99-99-9999-9999"
+																			data-mask="+99-99-9999-9999" class="form-control">
+																		<span class="form-text text-muted">+99-99-9999-9999</span>
+																	</div>
+																</div>
+															</div>
+															
+														</div>
+														
+
+														<div class="modal-footer">
+															<button type="button" class="btn btn-link"
+																data-dismiss="modal">Close</button>
+															<button type="button" class="btn bg-primary">Submit
+																form</button>
+														</div>
+												</div>
+											</div>
+										</div>
+										<!-- /vertical form modal -->
+									</div>
+										
 								</form>
 								<p class="desc text-danger fontsize11">Note : * Fields are
 									mandatory.</p>
@@ -493,11 +616,33 @@
 
 	</div>
 	<!-- /page content -->
+<script type="text/javascript">
+// Overlay callback
+$("#data_view_button")
+.click(
+		function() {
+			//blockThis();
+			
+			$.getJSON('${getSingleCategory}', {
+				ajax : 'true',
+			}, function(data) {
+				//document.getElementById("g_name").innerHTML=" Category Name:" +data.catName;
+				//document.getElementById("ifsc_code").innerHTML=" Bank Name: Bank of India";
+				document.getElementById("mod_title").innerHTML="Appending Ajax Return Data ";
+				document.getElementById("f_name").value=data.catName;
+				document.getElementById("l_name").value="Thakur";	
+				//unBlock();
+			})
+		})
+function trim(el) {
+			el.value = el.value.replace(/(^\s*)|(\s*$)/gi, ""). // removes leading and trailing spaces
+			replace(/[ ]{2,}/gi, " "). // replaces multiple spaces with one space 
+			replace(/\n +/, "\n"); // Removes spaces after newlines
 
+			return;
+		}
+</script>
 	<script>
-	
-
-    
 	 var loadFile = function(event) {
 		 document.getElementById('output').style.display="none";
 		 try {
@@ -556,7 +701,8 @@
 				return true
 			}
 		}
-
+		
+		
 		$(document)
 				.ready(
 						function($) {
@@ -744,9 +890,68 @@
 	            alwaysShow: true,
 	            placement: 'top'
 	        });
-		 
-		 $('#submtbtn').on('click', function() {
-				$.blockUI({ 
+		 /* Block the card on button click */
+		 $('#submtbtn1').on('click', function() {
+		 	var block = $(this).parent().parent();
+		 	$(block).block({ 
+		 	    message: '<i class="icon-spinner4 spinner"></i>',
+		 	    timeout: 2000, //unblock after 2 seconds
+		 	    overlayCSS: {
+		 	        backgroundColor: '#fff',
+		 	        opacity: 0.8,
+		 	        cursor: 'wait'
+		 	    },
+		 	    css: {
+		 	        border: 0,
+		 	        padding: 0,
+		 	        backgroundColor: 'transparent'
+		 	    }
+		 	});
+		 });
+		  // Default message
+	        $('#data_view_button11').on('click', function() {
+	            var block = $(this).closest('.card');
+	            $(block).block({
+	                message: '<span class="font-weight-semibold">Please wait...</span>',
+	                timeout: 2000, //unblock after 2 seconds
+	                overlayCSS: {
+	                    backgroundColor: '#fff',
+	                    opacity: 0.8,
+	                    cursor: 'wait'
+	                },
+	                css: {
+	                    border: 0,
+	                    padding: 0,
+	                    backgroundColor: 'transparent'
+	                }
+	            });
+	        });
+		  $('#submtbtn').on('click', function() {
+	            $.blockUI({ 
+	                message: '<i class="icon-spinner4 spinner"></i>',
+	                fadeIn: 800, 
+	                timeout: 2000, //unblock after 2 seconds
+	                overlayCSS: {
+	                    backgroundColor: '#1b2024',
+	                    opacity: 0.8,
+	                    zIndex: 1200,
+	                    cursor: 'wait'
+	                },
+	                css: {
+	                    border: 0,
+	                    color: '#fff',
+	                    zIndex: 1201,
+	                    padding: 0,
+	                    backgroundColor: 'transparent'
+	                },
+	                onBlock: function() { 
+	                    alert('Page is now blocked. FadeIn completed.'); 
+	                } 
+	            });
+	        });
+
+		/*  $('#submtbtn').on('click', function() {
+					
 				  //  message: '&lt;i class="icon-spinner4 spinner">&lt;/i>',
 				    timeout: 4000, //unblock after 2 seconds
 				    overlayCSS: {
@@ -761,7 +966,8 @@
 				        backgroundColor: 'transparent'
 				    }
 				});
-			});
+			}); */
+			
 	</script>
 
 

@@ -5,6 +5,7 @@ import org.springframework.web.client.RestTemplate;
 
 public class Constants {
 	public static final String url = "http://localhost:8094/";
+	public static final String url1 = "http://107.180.88.121:8080/HrEsayWebApi/";
 	public
 	  static final String empDocSaveUrl ="/home/ubuntu/Downloads/apache-tomcat-9.0.24/webapps/uploads/";
 	public static String[] imageAndDocFileExtension = { "txt", "doc", "docx", "pdf", "xls", "xlsx","jpg", "jpeg", "gif", "png" }; 

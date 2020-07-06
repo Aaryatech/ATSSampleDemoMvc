@@ -15,6 +15,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -44,22 +46,29 @@ public class HomeController {
 
 		AssetCategory[] assetArr = Constants.getRestTemplate().getForObject(Constants.url1 + "/getAllAssetCategory",
 				AssetCategory[].class);
-		List<AssetCategory> assetList = new ArrayList<AssetCategory>(Arrays.asList(assetArr));
-		System.err.println("cat List " + assetList.toString());
+		List<AssetCategory> assetCatList = new ArrayList<AssetCategory>(Arrays.asList(assetArr));
+		System.err.println("cat List " + assetCatList.toString());
 
-		Date date = new Date();
-		DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG, locale);
 
-		String formattedDate = dateFormat.format(date);
+		model.addAttribute("catId", 28);
+		model.addAttribute("assetCatList", assetCatList);
+		
+		
+		MultiValueMap<String, Object> map= new LinkedMultiValueMap<>();
+		map.add("companyId", 1);
+		Location[] location = Constants.getRestTemplate().postForObject(Constants.url1 + "/getLocationList", map,
+				Location[].class);
 
-		model.addAttribute("serverTime", formattedDate);
+		List<Location> locationList = new ArrayList<Location>(Arrays.asList(location));
+		model.addAttribute("locationIds", "5,9,2,7");
+		model.addAttribute("locationList", locationList);
 		return "3_col_page";
 		//return "dataTableDemo";
 	}
 
 	@RequestMapping(value = "/getCatList", method = RequestMethod.GET)
 	public @ResponseBody String getCatList(Locale locale, Model model) {
-System.err.println("Ajax call");
+		System.err.println("Ajax call");
 		AssetCategory[] assetArr = Constants.getRestTemplate().getForObject(Constants.url1 + "/getAllAssetCategory",
 				AssetCategory[].class);
 		List<AssetCategory> assetList = new ArrayList<AssetCategory>(Arrays.asList(assetArr));
@@ -70,8 +79,21 @@ System.err.println("Ajax call");
 		return jsonString;
 	}
 
-	@RequestMapping(value = "/{pageNumber}", method = RequestMethod.GET)
-	public String home(Locale locale, Model model, @PathVariable int pageNumber) {
+	
+	@RequestMapping(value = "/getSingleCategory", method = RequestMethod.GET)
+	public @ResponseBody String getSingleCategory(Locale locale, Model model) {
+		System.err.println("Ajax call");
+		AssetCategory[] assetArr = Constants.getRestTemplate().getForObject(Constants.url1 + "/getAllAssetCategory",
+				AssetCategory[].class);
+		List<AssetCategory> assetList = new ArrayList<AssetCategory>(Arrays.asList(assetArr));
+		System.err.println("cat List " + assetList.toString());
+
+		String jsonString = CommonUtility.toJSONString(assetList.get(0));
+		System.err.println("jsonString " + jsonString);
+		return jsonString;
+	}
+	@RequestMapping(value = "/getPage{pageNumber}", method = RequestMethod.GET)
+	public String home(Locale locale, Model model, @PathVariable  int pageNumber) {
 		logger.info("Welcome home! The client locale is {}.", locale);
 
 		/*
@@ -138,4 +160,30 @@ System.err.println("Ajax call");
 
 	}
 
+
+	@RequestMapping(value = "/{showAllControlPage}", method = RequestMethod.GET)
+	public String showAllControlPage(Locale locale, Model model,HttpServletRequest request, HttpServletResponse response) {
+System.err.println("Heii");
+		/*
+		 * AssetCategory[] assetArr =
+		 * Constants.getRestTemplate().getForObject(Constants.url +
+		 * "/getAllAssetCategory", AssetCategory[].class); List<AssetCategory> assetList
+		 * = new ArrayList<AssetCategory>(Arrays.asList(assetArr));
+		 * System.err.println("cat List " + assetList.toString());
+		 */
+String x=null;
+try {
+		Date date = new Date();
+		DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG, locale);
+		String formattedDate = dateFormat.format(date);
+		
+		model.addAttribute("serverTime", formattedDate);
+		
+		 x="moh_pages/moh_all_control";
+}catch (Exception e) {
+	e.printStackTrace();
+}
+			return x;
+			
+	}
 }
