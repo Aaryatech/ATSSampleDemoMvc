@@ -4,7 +4,7 @@
  	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	<title>HR Management11</title>
+	<title>HR Management</title>
 	<link rel="shortcut icon" href="${pageContext.request.contextPath}/resources/global_assets/images/companylogo.png" type="image/x-icon" /> 
 	<!-- Global stylesheets -->
 	<link href="https://fonts.googleapis.com/css?family=Roboto:400,300,100,500,700,900" rel="stylesheet" type="text/css">
@@ -22,6 +22,9 @@
 	<link
 	href="${pageContext.request.contextPath}/resources/assets/css/dashboard.css"
 	rel="stylesheet" type="text/css">
+		<link
+	href="${pageContext.request.contextPath}/resources/assets/css/custom.css"
+	rel="stylesheet" type="text/css"> <!--Added by Sachin Given by Mohsin on 08-07-2020 for Tables-->
 	<link href="https://fonts.googleapis.com/css?family=Cuprum:400,700&display=swap" rel="stylesheet"> 
 	<!-- font-family: 'Cuprum', sans-serif; -->
 	<!-- /global stylesheets -->
@@ -101,6 +104,11 @@
 <script src="${pageContext.request.contextPath}/resources/global_assets/js/demo_pages/datatables_basic.js"></script>
 <script src="${pageContext.request.contextPath}/resources/global_assets/js/demo_pages/form_dual_listboxes.js"></script>
 	<!-- /theme JS files -->
+	
+	<!-- ATS Developer JS Files Sachin 09-07-2020 -->
+	<script src="${pageContext.request.contextPath}/resources/assets/js/ats_validation.js"></script>
+	
+	
 	<script>
 	 // Export options - column selector
     

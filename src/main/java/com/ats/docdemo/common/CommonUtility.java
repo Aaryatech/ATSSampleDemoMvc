@@ -49,9 +49,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sun.mail.smtp.SMTPSendFailedException;
 
 public class CommonUtility {
-	///documentation for tomcat setup.
-	
-	//#1
+
+	// #1
 	// Convert given String DDMMYYYY Date to YYYYMMDD Date.
 	public static String convertToYMD(String date) {
 
@@ -69,7 +68,7 @@ public class CommonUtility {
 		}
 		return convertedDate;
 	}
-	
+
 	// #2
 	// Convert given String YYYYMMDD Date to DDMMYYYY Date.
 	public static String convertToDMY(String utildate) {
@@ -103,17 +102,17 @@ public class CommonUtility {
 		return convertedDate;
 	}
 
-	//#4
-	//get Calendar object with given interval added with time
+	// #4
+	// get Calendar object with given interval added with time
 	public static Calendar getTimePlusSpecMin(int interval) {
 		Calendar cal = Calendar.getInstance();
 		cal.add(Calendar.MINUTE, interval);
 		// return String.valueOf(df.format(cal30.getTime()));
 		return cal;
 	}
-	
-	//#5
-    //get current  Calendar object instance 
+
+	// #5
+	// get current Calendar object instance
 	public static Calendar getCurTime() {
 		int interval = 0;
 		Calendar curCal = Calendar.getInstance();
@@ -123,7 +122,7 @@ public class CommonUtility {
 	}
 
 	// #6
-    // Get From to Date with months first day date to current day's date in DDMMYYYY
+	// Get From to Date with months first day date to current day's date in DDMMYYYY
 	public static String getFromToDate() {
 
 		String leaveDateRange = null;
@@ -144,7 +143,7 @@ public class CommonUtility {
 	}
 
 	// #7
-    //get current months start date and end date. in DDMMYYYY
+	// get current months start date and end date. in DDMMYYYY
 	public static String getMonthsStartEnd() {
 		String dateRange = null;
 		String fromDate = null;
@@ -167,8 +166,8 @@ public class CommonUtility {
 		return dateRange;
 	}
 
-	//#8
-	//Adding noOfDays to Current Date and return that date
+	// #8
+	// Adding noOfDays to Current Date and return that date
 	public static String addDaystoCurrentDate(int noOfDays) {
 		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 		Calendar c = Calendar.getInstance();
@@ -179,8 +178,8 @@ public class CommonUtility {
 		return output;
 	}
 
-	//#9
-	//Adding noOfDays to Current Date and return that date
+	// #9
+	// Adding noOfDays to Current Date and return that date
 	public static String addDaystoGivenDate(int noOfDays, String inputDate) throws ParseException {
 		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 		Calendar c = Calendar.getInstance();
@@ -191,8 +190,8 @@ public class CommonUtility {
 		return outputDate;
 	}
 
-	//#10
-	//get Current YMD Datetime
+	// #10
+	// get Current YMD Datetime
 	public static String getCurrentYMDDateTime() {
 		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		Calendar cal = Calendar.getInstance();
@@ -201,9 +200,9 @@ public class CommonUtility {
 	}
 
 	public static void main(String[] args) {
-		//sendMessage("hhh","9404725912");
-		sendEmailWithSubMsgAndToAdd("Test","hello ","abc@kkk.com");
-		
+		// sendMessage("hhh","9404725912");
+		sendEmailWithSubMsgAndToAdd("Test", "hello ", "abc@kkk.com");
+
 		getCurrentYMDDateTime();
 		addDaystoCurrentDate(4);
 		try {
@@ -220,8 +219,8 @@ public class CommonUtility {
 		System.err.println("jsonStringArray " + jsonStringArray);
 	}
 
-	//#11
-	//get Round up of given float value with specified scale
+	// #11
+	// get Round up of given float value with specified scale
 	public static float roundHalfUpByScale(float d, int scale) {
 		// return BigDecimal.valueOf(d).setScale(2,
 		// BigDecimal.ROUND_HALF_UP).floatValue();
@@ -249,8 +248,8 @@ public class CommonUtility {
 
 	}
 
-	//#13
-	//Convert given minutes string to hour
+	// #13
+	// Convert given minutes string to hour
 	public static String convertMinToHours(String inputMinutes) {
 		String min = new String();
 		int minutes = Integer.parseInt(inputMinutes);
@@ -269,11 +268,12 @@ public class CommonUtility {
 		}
 		return min;
 	}
-	//#14
-	//change session key for each request
+
+	// #14
+	// change session key for each request
 	public static void changeSessionKey(HttpServletRequest request) {
 		try {
-			
+
 			UUID uuid = UUID.randomUUID();
 			MessageDigest md = null;
 			try {
@@ -281,7 +281,7 @@ public class CommonUtility {
 			} catch (NoSuchAlgorithmException e) {
 				e.printStackTrace();
 			}
-		
+
 			byte[] messageDigest = md.digest(String.valueOf(uuid).getBytes());
 			BigInteger number = new BigInteger(1, messageDigest);
 			String hashtext = number.toString(16);
@@ -295,8 +295,8 @@ public class CommonUtility {
 
 	public static ObjectMapper mapper = new ObjectMapper();
 
-	//#15
-	//Convert given bean object to JSON String
+	// #15
+	// Convert given bean object to JSON String
 	public static String toJSONString(Object o) {
 		String result = "";
 		if (o != null) {
@@ -318,13 +318,14 @@ public class CommonUtility {
 		}
 		return result;
 	}
-	//#16
-    //To get OTP String of Integer for	 specified length
+
+	// #16
+	// To get OTP String of Integer for specified length
 	public static String getOTP(int length) {
 
 		String AlphaNumericString = "0123456789";
 		StringBuilder sb = new StringBuilder(length);
-		
+
 		for (int i = 0; i < length; i++) {
 			int index = (int) (AlphaNumericString.length() * Math.random());
 			sb.append(AlphaNumericString.charAt(index));
@@ -332,8 +333,8 @@ public class CommonUtility {
 		return sb.toString();
 	}
 
-	//#17
-	//send Email -parameters as subject,msgContent, toAddress
+	// #17
+	// send Email -parameters as subject,msgContent, toAddress
 	public static Info sendEmailWithSubMsgAndToAdd(String mailSubjet, String msgContent, String toAddress) {
 
 		Info info = new Info();
@@ -392,38 +393,69 @@ public class CommonUtility {
 		return info;
 
 	}
-	public static void sendMessage(String message,String deliveryNo) {
+
+	// #18
+	// send text Message -parameters as message and deliveryNo
+	public static void sendMessage(String message, String deliveryNo) {
 		MultiValueMap<String, Object> map = new LinkedMultiValueMap<String, Object>();
 		RestTemplate restTemplate = new RestTemplate();
 
 		Info info = new Info();
-	String msg = " Hello Sachin";
+		String msg = " Hello Sachin";
 
-	map.add("username", "rusamah-wb");
-	map.add("password", "Rus@@123456");
-	map.add("senderid", "MHRUSA");
-	map.add("mobileno", deliveryNo);
-	map.add("content", msg);
-	map.add("smsservicetype", "singlemsg");
-	
-	ParameterizedTypeReference<String> typeRef = new ParameterizedTypeReference<String>() {};
+		map.add("username", "rusamah-wb");
+		map.add("password", "Rus@@123456");
+		map.add("senderid", "MHRUSA");
+		map.add("mobileno", deliveryNo);
+		map.add("content", msg);
+		map.add("smsservicetype", "singlemsg");
 
-	ResponseEntity<String> responseEntity = null;
-	try {
-		responseEntity = restTemplate.exchange("https://msdgweb.mgov.gov.in/esms/sendsmsrequest" + "",
-				HttpMethod.POST, new HttpEntity<>(map),typeRef);
-		System.err.println("Message Service Response for  9404725912 "+responseEntity.getBody());
-	}catch (HttpClientErrorException e) {
-System.err.println("responseEntity "+e.getResponseBodyAsString());
-	}
+		ParameterizedTypeReference<String> typeRef = new ParameterizedTypeReference<String>() {
+		};
+
+		ResponseEntity<String> responseEntity = null;
+		try {
+			responseEntity = restTemplate.exchange("https://msdgweb.mgov.gov.in/esms/sendsmsrequest" + "",
+					HttpMethod.POST, new HttpEntity<>(map), typeRef);
+			System.err.println("Message Service Response for  9404725912 " + responseEntity.getBody());
+		} catch (HttpClientErrorException e) {
+			System.err.println("responseEntity " + e.getResponseBodyAsString());
+		}
 
 		/*
 		 * String sms =
 		 * restTemplate.postForObject("https://msdgweb.mgov.gov.in/esms/sendsmsrequest",
 		 * map, String.class);
 		 */
-	
-	
 
+	}
+
+	// #19
+	// Return String with capitalizing first letter of each word for given String
+	// parameter
+	public static String capitalizeWord(String str) {
+		String words[] = str.split("\\s");
+		String capitalizeWord = "";
+		for (String w : words) {
+			String first = w.substring(0, 1);
+			String afterfirst = w.substring(1);
+			capitalizeWord += first.toUpperCase() + afterfirst + " ";
+		}
+		return capitalizeWord.trim();
+	}
+
+	// #20
+	// Return String in Upper case for given String parameter
+	public static String toUpperCase(String str) {
+
+		return str.toUpperCase();
+	}
+
+//#21
+	// Return String in Lower case for given String parameter
+	public static String toLowerCase(String str) {
+		
+		return str.toLowerCase();
+		
 	}
 }

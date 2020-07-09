@@ -186,4 +186,12 @@ try {
 			return x;
 			
 	}
+	
+	
+	@RequestMapping(value = "/showTables", method = RequestMethod.GET)
+	public String showTables(Locale locale, Model model) {
+
+		return "table_pages/demo_tables";
+		//return "dataTableDemo";
+	}
 }

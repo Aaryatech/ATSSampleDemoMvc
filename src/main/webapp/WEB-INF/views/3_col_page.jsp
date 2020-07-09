@@ -932,8 +932,8 @@ function trim(el) {
 	                fadeIn: 800, 
 	                timeout: 2000, //unblock after 2 seconds
 	                overlayCSS: {
-	                    backgroundColor: '#1b2024',
-	                    opacity: 0.8,
+	                    backgroundColor: 'transparent',
+	                    opacity: 0.2,
 	                    zIndex: 1200,
 	                    cursor: 'wait'
 	                },
