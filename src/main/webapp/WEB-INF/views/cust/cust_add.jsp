@@ -396,7 +396,6 @@ $("#data_view_button")
 					leftColumns : 1,
 					rightColumns : 1	
 				}
-		 
 
 			});
 
@@ -429,7 +428,7 @@ $("#data_view_button")
 										},
 										cancel : {
 											label : 'Cancel',
-											className : 'btn-link'
+											className : 'btn-danger'
 										}
 									},
 									callback : function(result) {

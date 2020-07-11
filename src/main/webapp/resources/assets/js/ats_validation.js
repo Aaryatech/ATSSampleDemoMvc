@@ -153,5 +153,12 @@ function trim(el) {
 	        return str.replace(/<[^>]*>/g, '');
 	    }
 	    
+	    //count no of dots in string
+	    function getDotCount(){
+	    var string = "How are you doing . - today? You . - are such a nice person!";
+	    var num = string.match(/\./g).length;
+	    console.log(num);
+	    }
+	    
 	    
 		
