@@ -61,7 +61,7 @@
 												<i class="icon-list-unordered"></i>1 Column Form Input ([2-10],[3-9])*1
 											</h5></td>
 										<td width="40%" align="right">
-										<a
+										<%-- <a
 									href="${pageContext.request.contextPath}/3"
 									class="breadcrumb-elements-item">
 										<button type="button" class="btn btn-primary">3 Column Page </button>
@@ -70,7 +70,7 @@
 									href="${pageContext.request.contextPath}/2"
 									class="breadcrumb-elements-item">
 										<button type="button" class="btn btn-primary">2 Column Page </button>
-								</a>
+								</a> --%>
 										</td>
 									</tr>
 								</table>

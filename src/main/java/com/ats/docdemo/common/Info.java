@@ -2,13 +2,20 @@ package com.ats.docdemo.common;
 
 public class Info {
 	
-	private boolean isError; 
+	private boolean isError;  //true means Error present, false means no Error
 	private String msg;
 	
 	private int statusCode;
 	private String statusText;
 	
 	private int isSessionAlive;
+	
+	private String responseObject1;
+	
+	private String responseObject2;
+	
+	
+	
 	
 	public boolean isError() {
 		return isError;
@@ -40,13 +47,24 @@ public class Info {
 	public void setIsSessionAlive(int isSessionAlive) {
 		this.isSessionAlive = isSessionAlive;
 	}
+	public String getResponseObject1() {
+		return responseObject1;
+	}
+	public void setResponseObject1(String responseObject1) {
+		this.responseObject1 = responseObject1;
+	}
+	public String getResponseObject2() {
+		return responseObject2;
+	}
+	public void setResponseObject2(String responseObject2) {
+		this.responseObject2 = responseObject2;
+	}
 	
 	@Override
 	public String toString() {
 		return "Info [isError=" + isError + ", msg=" + msg + ", statusCode=" + statusCode + ", statusText=" + statusText
-				+ ", isSessionAlive=" + isSessionAlive + "]";
+				+ ", isSessionAlive=" + isSessionAlive + ", responseObject1=" + responseObject1 + ", responseObject2="
+				+ responseObject2 + "]";
 	}
-	
-	
 
 }

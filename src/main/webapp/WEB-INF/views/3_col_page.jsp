@@ -51,26 +51,11 @@
 								<table width="100%">
 									<tr width="100%">
 										<td width="60%"><h5 class="pageTitle">
-												<i class="icon-list-unordered"></i>3 bb Column Form Input (1-3)*3
+												<i class="icon-list-unordered"></i>3 Column Form Input (1-3)*3
 											</h5></td>
 										<td width="40%" align="right">
 										
-									<a
-									href="${pageContext.request.contextPath}/getPage/2"
-									class="breadcrumb-elements-item">
-										<button type="button" class="btn btn-primary">2 Column Page </button>
-								</a>
-								<a
-									href="${pageContext.request.contextPath}/getPage/1"
-									class="breadcrumb-elements-item">
-										<button type="button" class="btn btn-primary">1 Column Page </button>
-								</a>
 								
-								<a
-									href="${pageContext.request.contextPath}/showAllControlPage"
-									class="breadcrumb-elements-item">
-										<button type="button" class="btn btn-primary">All Control Page</button>
-								</a>
 								
 										</td>
 									</tr>
@@ -224,14 +209,14 @@
 												</div>
 												
 													<label class="col-form-label text-info font-weight-bold col-lg-1"
-													for="empType">Medium Select ${catId}<span class="text-danger">*</span>:
+													for="empType">Medium Select<span class="text-danger">*</span>:
 												</label>
 												<div class="col-lg-3">
 													<select name="empType"
 														data-placeholder="Select Medium" id="empType"
 														class="form-control form-control-select2 select2-hidden-accessible">
 														<c:forEach items="${assetCatList}" var="assetCat" varStatus="count">
-														<option value="${assetCat.assetCatId}" ${assetCat.assetCatId == catId ? 'selected' : ''}>${assetCat.assetCatId}</option>
+														<option value="${assetCat.assetCatId}" ${assetCat.assetCatId == catId ? 'selected' : ''}>${assetCat.catName}</option>
 														</c:forEach>
 														
 														
@@ -425,42 +410,7 @@
 									
 									
 								</div>
-											<div class="form-group row">
-
-										<label
-											class="col-form-label text-info font-weight-bold col-lg-2"
-											for="doc">Select File<span class="text-danger">*</span>:
-										</label>
-										<div class="col-lg-4">
-											<input type="file" class="form-control" id="doc" name="doc"
-												accept=".docx,.xlsx,.pdf"> <span
-												class="form-text text-muted">Only .docx,.xlsx,.pdf</span> <span
-												class="validation-invalid-label" id="error_doc1"
-												style="display: none;">This field is required.</span>
-
-
-
-										</div>
-
-										<label
-											class="col-form-label text-info font-weight-bold  col-lg-2 float"
-											for="docImg">Select Image<span class="text-danger">*
-										</span>:
-										</label>
-										<div class="col-lg-4 float">
-											<img id="output" width="150"
-												src="${imgPath}${asset.assetPurImage}" /> <input type="file"
-												accept="image/*" name="docImg" id="docImg"
-												value="${asset.assetPurImage}"
-												accept=".jpg,.png,.gif,.jpeg,.bmp"
-												onchange="loadFile(event)"><span
-												class="form-text text-muted">Only
-												.jpg,.png,.gif,.jpeg,.bmp</span> <span
-												class="validation-invalid-label" id="error_docImg"
-												style="display: none;">This field is required.</span>
-										</div>
-
-									</div>
+											
 									
 									<div class="form-group row">
 										<label

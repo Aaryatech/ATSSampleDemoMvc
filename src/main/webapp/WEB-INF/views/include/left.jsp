@@ -64,6 +64,56 @@
 					class="nav-link active" onclick="selectSubMod(0,0)"> <i
 						class="icon-home4"></i> <span> Dashboard </span>
 				</a></li>
+				
+				
+				<li class="nav-item"><a
+					href="${pageContext.request.contextPath}/getPage/3"
+					class="nav-link active" onclick="selectSubMod(0,0)"> <i
+						class="icon-home4"></i> <span> 3 Column Form </span>
+				</a></li>
+				<li class="nav-item"><a
+					href="${pageContext.request.contextPath}/getPage/2"
+					class="nav-link active" onclick="selectSubMod(0,0)"> <i
+						class="icon-home4"></i> <span> 2 Column Form </span>
+				</a></li>
+				
+				<li class="nav-item"><a
+					href="${pageContext.request.contextPath}/getPage/1"
+					class="nav-link active" onclick="selectSubMod(0,0)"> <i
+						class="icon-home4"></i> <span> 1 Column Form </span>
+				</a></li>
+				
+				<li class="nav-item"><a
+					href="${pageContext.request.contextPath}/showAllControlPage"
+					class="nav-link active" onclick="selectSubMod(0,0)"> <i
+						class="icon-home4"></i> <span>All HTML Controls </span>
+				</a></li>
+				
+				<li class="nav-item"><a
+					href="${pageContext.request.contextPath}/showTables"
+					class="nav-link active" onclick="selectSubMod(0,0)"> <i
+						class="icon-home4"></i> <span>HTML Tables</span>
+				</a></li>
+				
+				<li class="nav-item"><a
+					href="${pageContext.request.contextPath}/showAddCustomerPage"
+					class="nav-link active" onclick="selectSubMod(0,0)"> <i
+						class="icon-home4"></i> <span>Master Form Operation</span>
+				</a></li>
+				
+				
+				<li class="nav-item"><a
+					href="${pageContext.request.contextPath}/showAddBillPage"
+					class="nav-link active" onclick="selectSubMod(0,0)"> <i
+						class="icon-home4"></i> <span>Transaction Form</span>
+				</a></li>
+				
+				<li class="nav-item"><a
+					href="${pageContext.request.contextPath}/showReadyToGoPages"
+					class="nav-link active" onclick="selectSubMod(0,0)"> <i
+						class="icon-home4"></i> <span>Ready To Go Form</span>
+				</a></li>
+				
 
 				<%-- <li class="nav-item nav-item-submenu"><a href="#"
 					class="nav-link"><i class="icon-list-unordered"></i><span>Master</span></a>

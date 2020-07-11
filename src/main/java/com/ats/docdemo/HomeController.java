@@ -92,17 +92,12 @@ public class HomeController {
 		System.err.println("jsonString " + jsonString);
 		return jsonString;
 	}
-	@RequestMapping(value = "/getPage{pageNumber}", method = RequestMethod.GET)
+	
+	
+	@RequestMapping(value = "/getPage/{pageNumber}", method = RequestMethod.GET)
 	public String home(Locale locale, Model model, @PathVariable  int pageNumber) {
 		logger.info("Welcome home! The client locale is {}.", locale);
 
-		/*
-		 * AssetCategory[] assetArr =
-		 * Constants.getRestTemplate().getForObject(Constants.url +
-		 * "/getAllAssetCategory", AssetCategory[].class); List<AssetCategory> assetList
-		 * = new ArrayList<AssetCategory>(Arrays.asList(assetArr));
-		 * System.err.println("cat List " + assetList.toString());
-		 */
 		Date date = new Date();
 		DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG, locale);
 		String formattedDate = dateFormat.format(date);
@@ -112,16 +107,35 @@ public class HomeController {
 		} else if (pageNumber == 2) {
 			return "2_col_page";
 		} else {
+			
+			AssetCategory[] assetArr = Constants.getRestTemplate().getForObject(Constants.url1 + "/getAllAssetCategory",
+					AssetCategory[].class);
+			List<AssetCategory> assetCatList = new ArrayList<AssetCategory>(Arrays.asList(assetArr));
+			System.err.println("cat List " + assetCatList.toString());
+
+
+			model.addAttribute("catId", 28);
+			model.addAttribute("assetCatList", assetCatList);
+			
+			
+			MultiValueMap<String, Object> map= new LinkedMultiValueMap<>();
+			map.add("companyId", 1);
+			Location[] location = Constants.getRestTemplate().postForObject(Constants.url1 + "/getLocationList", map,
+					Location[].class);
+
+			List<Location> locationList = new ArrayList<Location>(Arrays.asList(location));
+			model.addAttribute("locationIds", "5,9,2,7");
+			model.addAttribute("locationList", locationList);
+			
 			return "3_col_page";
 		}
 	}
 
 	// submitInsertBank
-
+//Demonstartion of image upload
 	@RequestMapping(value = "/submitInsertBank", method = RequestMethod.POST)
 	public String submitInsertBank(HttpServletRequest request, HttpServletResponse response,
 			@RequestParam("doc") MultipartFile doc, @RequestParam("docImg") MultipartFile docImg) {
-		System.err.println("Pan no" + request.getParameter("pan").toUpperCase());
 		String docName = "";
 
 		if (!doc.getOriginalFilename().equalsIgnoreCase("")) {
@@ -164,13 +178,6 @@ public class HomeController {
 	@RequestMapping(value = "/{showAllControlPage}", method = RequestMethod.GET)
 	public String showAllControlPage(Locale locale, Model model,HttpServletRequest request, HttpServletResponse response) {
 System.err.println("Heii");
-		/*
-		 * AssetCategory[] assetArr =
-		 * Constants.getRestTemplate().getForObject(Constants.url +
-		 * "/getAllAssetCategory", AssetCategory[].class); List<AssetCategory> assetList
-		 * = new ArrayList<AssetCategory>(Arrays.asList(assetArr));
-		 * System.err.println("cat List " + assetList.toString());
-		 */
 String x=null;
 try {
 		Date date = new Date();

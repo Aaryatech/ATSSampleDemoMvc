@@ -60,7 +60,7 @@
 										<td width="60%"><h5 class="pageTitle">
 												<i class="icon-list-unordered"></i>Add Customer
 											</h5></td>
-										<td width="40%" align="right"><a
+										<td width="40%" align="right"><%-- <a
 											href="${pageContext.request.contextPath}/getPage/2"
 											class="breadcrumb-elements-item">
 												<button type="button" class="btn btn-primary">2
@@ -74,7 +74,7 @@
 											class="breadcrumb-elements-item">
 												<button type="button" class="btn btn-primary">All
 													Control Page</button>
-										</a></td>
+										</a> --%></td>
 									</tr>
 								</table>
 							</div>
@@ -128,8 +128,8 @@
 										</label>
 										<div class="col-lg-4 float">
 											<input type="text"
-												class="form-control alphaonly maxlength-badge-position"
-												value="${bank.name}" placeholder="Enter Customer Name"
+												class="form-control alphaAndDotonly maxlength-badge-position"
+												value="${cust.custName}" placeholder="Enter Customer Name"
 												id="cust_name" name="cust_name" autocomplete="off"
 												onchange="trim(this)" maxlength="60"> <span
 												class="validation-invalid-label" id="error_custName"
@@ -171,7 +171,7 @@
 											<textarea class="form-control maxlength-badge-position"
 												placeholder="Enter Customer Remark" id="cust_remark"
 												name="cust_remark" autocomplete="off" maxlength="50"
-												onchange="trim(this)">${cust.custRemark}</textarea>
+												onchange="trim(this)">${cust.exVar1}</textarea>
 
 										</div>
 									</div>
@@ -199,7 +199,7 @@
 							<p class="desc text-danger fontsize11">Note : * Fields are
 								mandatory.</p>
 
-							<table class="table datatable-scroll-y" width="100%">
+							<table class="table datatable-fixed-left_custom table-bordered  table-hover   table-striped" width="100%">
 								<thead>
 									<tr>
 										<th>Sr No</th>
@@ -207,13 +207,42 @@
 										<th>Mobile</th>
 										<th>Credit Days</th>
 										<th>Status</th>
-										<th class="text-center">Actions</th>
+										<th>Actions</th>
 									</tr>
 								</thead>
 								<tbody>
+								<c:forEach items="${custList}" varStatus="count" var="custBean">
 									<tr>
-
+									<td>${count.index+1}</td>
+									<td>${custBean.custName}</td>
+									<td>${custBean.custMob}</td>
+									<td>${custBean.creditDays}</td>
+									<td>${custBean.isActive}</td>
+									
+									<td class="text-center">
+									<c:if test="${editAccess == 0}">
+									<!-- This is Access Rights check  -->
+									<!-- Show Edit button by checking this condition by here only  Sachin 10-07-2020 -->
+									</c:if>
+									
+									<c:if test="${deleteAccess == 0}">
+									<!-- This is Access Rights check  -->
+									<!-- Show Delete button by checking this condition by here only  Sachin 10-07-2020 -->
+									</c:if>
+												<a
+													href="${pageContext.request.contextPath}/showEditCustomerPage?custId=${custBean.custId}"
+													class="list-icons-item text-primary-600" data-popup="tooltip" title="" data-original-title="Edit"><i class="icon-pencil7"
+													 ></i></a>
+										
+											<a href="javascript:void(0)"
+													class="list-icons-item text-danger-600 bootbox_custom"
+													data-uuid="${custBean.custId}" data-popup="tooltip"
+													title="" data-original-title="Delete"><i
+													class="icon-trash"></i></a>
+											</td>
+									
 									</tr>
+									</c:forEach>
 								</tbody>
 							</table>
 
@@ -341,7 +370,75 @@ $("#data_view_button")
 	        });
 
 		
+		 $('.datatable-fixed-left_custom').DataTable({
+
+				columnDefs : [ {
+					orderable : false,
+					targets : [ 1 ]
+				}, {
+					width : "10px",
+					targets : [ 0 ]
+				}, {
+					width : "10px",
+					targets : [ 1 ]
+				}, {
+					width : "200px",
+					targets : [ 3 ]
+				} ],
+				//scrollX : true,
+				scrollX : true,
+				scrollY : '65vh',
+				scrollCollapse : true,
+				paging : true,
+				fixedColumns : {
+					leftColumns : 1,
+					rightColumns : 1	
+				}
+		 
+
+			});
+
+			$(document).ready(function() {
+
+				$('body').on('click', '#selAll', function() {
+					//alert("111111");
+					$('body input[type="checkbox"]').prop('checked', this.checked);
+					// $(this).toggleClass('allChecked');
+				})
+			});
 			
+			$('.bootbox_custom')
+			.on(
+					'click',
+					function() {
+						var uuid = $(this).data("uuid") 
+									bootbox.confirm({
+										 //size: 'small',
+										 //backdrop: true, //auto close when click in background
+										// locale: 'hr',
+										// centerVertical: true,
+
+									title : 'Confirm ',
+									message : 'Are you sure you want to delete selected records ?',
+									buttons : {
+										confirm : {
+											label : 'Yes',
+											className : 'btn-success'
+										},
+										cancel : {
+											label : 'Cancel',
+											className : 'btn-link'
+										}
+									},
+									callback : function(result) {
+										if (result) {
+											location.href = "${pageContext.request.contextPath}/deleteCustomerByCustId?custId="
+													+ uuid;
+
+										}
+									}
+								});
+					});
 	</script>
 
 
