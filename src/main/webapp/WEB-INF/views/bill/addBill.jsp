@@ -7,6 +7,6 @@
 <title>Coming soon</title>
 </head>
 <body>
-<marquee>Coming Soon</marquee>
+<marquee behavior="scroll"  bgcolor="red">Coming Soon</marquee>
 </body>
 </html>

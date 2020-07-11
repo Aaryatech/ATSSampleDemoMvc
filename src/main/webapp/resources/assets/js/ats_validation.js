@@ -152,3 +152,6 @@ function trim(el) {
 	    function stripHtmlTags(str) {
 	        return str.replace(/<[^>]*>/g, '');
 	    }
+	    
+	    
+		

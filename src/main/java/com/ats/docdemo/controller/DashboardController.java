@@ -8,17 +8,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
-public class LoginFormController {
+public class DashboardController {
 
+	//showDashboardPage
 	
-	//showReadyToGoPages
-	
-	@RequestMapping(value = "/showReadyToGoPages", method = RequestMethod.GET)
-	public String showReadyToGoPages(Locale locale, Model model) {
+		@RequestMapping(value = "/showDashboardPage", method = RequestMethod.GET)
+		public String showAddBillPage(Locale locale, Model model) {
 
-		return "general_form/reg_form";
-		//return "dataTableDemo";
-	}
-	
+			return "dashboard/dashboard";
+			//return "dataTableDemo";
+		}
 	
 }

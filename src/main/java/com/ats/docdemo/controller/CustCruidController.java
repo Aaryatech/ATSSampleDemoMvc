@@ -108,7 +108,8 @@ public class CustCruidController {
 		System.err.println(" Object custList2 ==" + custList.toString());
 
 		model.addAttribute("custList", custList);
-
+		HttpSession session = request.getSession();
+		session.setAttribute("successMsg", "Nice you done it");
 		return "cust/cust_add";
 		// return "dataTableDemo";
 	}

@@ -115,5 +115,13 @@
 	 
 	</script> 
 	<!-- /theme JS files -->
-
+	
+<!-- Sachin 11-07-2020 to remove success and error message from page after 5 Seconds of loading  -->
+<script>
+		$(document).ready(function() {
+					  setTimeout(function() {
+					    $(".alert-dismissible").remove();
+					  }, 5000);
+					});
+		</script>	
  

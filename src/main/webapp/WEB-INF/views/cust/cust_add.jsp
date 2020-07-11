@@ -79,7 +79,7 @@
 								</table>
 							</div>
 							<div class="card-body">
-								<%
+								<%-- <%
 									if (session.getAttribute("errorMsg") != null) {
 								%>
 								<div
@@ -114,7 +114,9 @@
 									session.removeAttribute("successMsg");
 									}
 								%>
-
+ --%>
+ 
+ <jsp:include page="/WEB-INF/views/include/response_msg.jsp"></jsp:include>
 								<form
 									action="${pageContext.request.contextPath}/submitCustAddForm"
 									id="submitInsert" method="post">
