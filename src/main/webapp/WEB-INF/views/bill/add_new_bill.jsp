@@ -22,7 +22,7 @@
 </head>
 
 <body>
-	<c:url value="/getSingleCategory" var="getSingleCategory"></c:url>
+	<c:url value="/addBillDetail" var="addBillDetail"></c:url>
 
 	<!-- Main navbar -->
 	<jsp:include page="/WEB-INF/views/include/header.jsp"></jsp:include>
@@ -72,6 +72,8 @@
 									id="submitInsert" method="post">
 									<input type="hidden" value="${cust.custId}" id="custId"
 										name="custId">
+										<input type="hidden" value="0" id="key"
+										name="key">
 									<div class="form-group row">
 										<label
 											class="col-form-label text-info font-weight-bold col-lg-2 float"
@@ -167,12 +169,19 @@
 												class="btn blue_btn" id="saveitembtn">
 												Save
 											</button></label>
+											
+											<div class="col-lg-2 loader_icn" id="loader" style="display:none;">
+										<img src="${pageContext.request.contextPath}/resources/assets/images/loader-ellipsis.svg">
 									</div>
-
+									
+									<span class="alert bg-danger text-white alert-styled-left" style="display: none;" id="err_msg">Oh snap!</span>
+	<span class="alert bg-success text-white alert-styled-left" style="display: none;" id="suc_msg">Well done!</span>				
+									
+									
+</div>
 
 									<div class="form-group row mb-0">
-										<div style="margin: 0 auto;">
-										</div>
+									
 									</div>
 
 									<p class="desc text-danger fontsize11">Note : * Fields are
@@ -181,7 +190,7 @@
 								<!-- 	<table
 										class="table datatable-fixed-left_custom"
 										width="100%"> -->
-										<table class="table datatable-fixed-left_custom" id="bill_detail_table">
+										<table class="table datatable-fixed-left_custom" id="bill_detail_table" width="100%">
 										<thead>
 											<tr>
 												<th>Sr No</th>
@@ -189,8 +198,6 @@
 												<th>Total Item</th>
 												<th>Rate</th>
 												<th>Total</th>
-												<th>Paid</th>
-												<th>Pending</th>
 												<th>Actions</th>
 											</tr>
 										</thead>
@@ -201,8 +208,6 @@
 													<td>${count.index+1}</td>
 													<td>${custBean.custName}</td>
 													<td>${custBean.custMob}</td>
-													<td>${custBean.creditDays}</td>
-													<td>${custBean.isActive}</td>
 													<td>${custBean.creditDays}</td>
 													<td>${custBean.isActive}</td>
 
@@ -242,6 +247,8 @@
 
 
 			<!-- Footer -->
+			
+			
 			<jsp:include page="/WEB-INF/views/include/footer.jsp"></jsp:include>
 			<!-- /footer -->
 
@@ -251,35 +258,128 @@
 	</div>
 	<!-- /page content -->
 	<script type="text/javascript">
-    jsonObj = [];
 	$("#saveitembtn")
 	.click(
 			function() {
-				//alert("Ok")
+				$("#loader").show();
 				var rowCount = $("#bill_detail_table").find("tbody>tr").length;
-
-				 // var rowCount = document.getElementById('bill_detail_table > tbody > tr').rows.length;
-				var rate1=document.getElementById("item_rate").value;
-				var desc1=document.getElementById("item_desc").value;
+				
+				var key=document.getElementById("key").value;
+				var rate=document.getElementById("item_rate").value;
+				var desc=document.getElementById("item_desc").value;
 				var qty=document.getElementById("tot_items").value;
-				var itemTotal=(parseInt(rate1)* parseInt(qty));
-				alert(rowCount);
-				item = {};	
-		        
-				item ["rate"] = rate1;
-		        item ["desc"] = desc1;
-		        item ["qty"] = qty;
-		        item ["itemTotal"] = itemTotal;
-		        item ["itemIndex"] = rowCount+1;
-		        jsonObj.push(item);
-		        
-		      for(var i=0;i<jsonObj.length;i++){
-		    	//alert(JSON.stringify(jsonObj[i].desc));
-		      }
-		    //  jsonObj.splice(2, 1)
-		    alert(JSON.stringify(jsonObj));
+				var itemTotal=(parseInt(rate)* parseInt(qty));
+				
+				var buttonValue=1;
+				
+				$.getJSON(
+						'${addBillDetail}',
+						{
+							rate : rate,
+							desc : desc,
+							qty : qty,
+							itemTotal : itemTotal,
+							key : key,
+							buttonValue : buttonValue,
+							ajax : 'true',
+						},
+						function(data) {
+							//alert(JSON.stringify(data));
+						if(data.error==false){
+							appendTableData(JSON.parse(data.responseObject1));
 
+						}else{
+							$("#loader").hide();
+						}
+						})
+						
 			})
+			function appendTableData(data){
+//alert(data)
+		/* if(data==null){
+			document.getElementById("submitButton").disabled=true;
+		}
+		
+		
+		 document.getElementById("work_id").value="";
+		
+		document.getElementById("work_pages").value="";
+		document.getElementById("page_rate").value="";
+		document.getElementById("work_paid_amt").value="";
+		document.getElementById("work_file").value="";
+		document.getElementById("work_pend_amt").value="";
+		document.getElementById("work_amt").value="";
+		document.getElementById("work_remark").value="";
+		document.getElementById("work_disc_amt").value=""; */
+		
+		var dataTable = $('#bill_detail_table')
+				.DataTable();
+		dataTable.clear().draw();
+
+		$
+				.each(
+						data,
+						function(i, v) {
+							 var str = '<a href="javascript:void(0)" class="list-icons-item text-primary-600" data-popup="tooltip" title="" data-original-title="Edit" onclick="callEdit('
+								+ v.totalAmt
+								+ ','
+								+ i
+								+ ')"><i class="icon-pencil7"></i></a>&nbsp;&nbsp;<a href="javascript:void(0)"   class="list-icons-item text-danger-600 bootbox_custom" data-uuid="5" data-original-title="Delete" onclick="callDelete('
+								+ v.totalAmt
+								+ ','
+								+ i
+								+ ')"><i class="icon-trash"></i></a>'
+							dataTable.row
+									.add(
+											[
+													i + 1,
+													v.workDesc,
+													v.qty,
+													v.rate,
+													v.totalAmt,
+													str ])
+									.draw();
+						}); 
+		var rowCount = $("#bill_detail_table").find("tbody>tr").length;
+		
+	/* 	
+		document.getElementById("submitButton").disabled=false;
+		//$('#submitButton').prop('disabled', false);
+		document.getElementById("loader").style="display:none"; */
+		$("#loader").hide();
+	}
+	
+	 
+	function callDelete(a,key){
+		//alert("a " +a +"b " +b)
+		$("#loader").show();
+		var buttonValue=0;
+		$.getJSON(
+				'${addBillDetail}',
+				{
+					key : key,
+					buttonValue : buttonValue,
+					ajax : 'true',
+				},
+				function(data) {
+					alert(JSON.stringify(data));
+				if(data.error==false){
+					appendTableData(JSON.parse(data.responseObject1));
+					document.getElementById("key").value=0;
+					document.getElementById("suc_msg").innerHTML(""+data.msg)
+				}else{
+					document.getElementById("err_msg").innerHTML(""+data.msg)
+					$("#loader").hide();
+				}
+				})
+		
+	}
+	function callEdit(a,key){
+		document.getElementById("key").value=key;
+		
+		
+	}
+			
 	 		// Overlay callback
 		$("#data_view_button")
 				.click(
@@ -430,6 +530,7 @@
 						'click',
 						function() {
 							var uuid = $(this).data("uuid")
+							alert("Index" +uuid)
 							bootbox
 									.confirm({
 										//size: 'small',
