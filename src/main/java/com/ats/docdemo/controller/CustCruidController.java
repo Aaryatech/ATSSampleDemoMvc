@@ -332,5 +332,63 @@ public class CustCruidController {
 		}
 		 return model;
 	}
+	
+	//activeDeactiveCust
+	
+	@RequestMapping(value = "/activeDeactiveCust", method = RequestMethod.GET)
+	public String activeDeactiveCust(Model model, HttpServletRequest request, HttpServletResponse response) {
+	System.err.println("Hi activeDeactiveCust ");
+		//	HttpSession session = request.getSession();
+		/*
+		 * ModelAndView model = null; List<AccessRightModule> newModuleList =
+		 * (List<AccessRightModule>) session.getAttribute("moduleJsonList");
+		 * 
+		 * Info view = AcessController.checkAccess("showAddCustomerPage",
+		 * "showAddCustomerPage", 1, 0, 0, 0, newModuleList);
+		 * 
+		 * if (view.isError() == true) {
+		 * 
+		 * model = new ModelAndView("accessDenied");
+		 * 
+		 * } else { //Actual code }
+		 */
 
+		int custId = 0;
+		try {
+			custId = Integer.parseInt(request.getParameter("custId"));
+		} catch (Exception e) {
+			custId = 0;
+		}
+		
+
+		int isActive = 0;
+		try {
+			isActive = Integer.parseInt(request.getParameter("isActive"));
+		} catch (Exception e) {
+			isActive = 0;
+		}
+		
+		MultiValueMap<String, Object> map = null;
+
+		map = new LinkedMultiValueMap<>();
+
+		map.add("custId", custId);
+		map.add("makerUserId", 1); // Take from Session.
+		map.add("makerDttime", CommonUtility.getCurrentYMDDateTime());
+		map.add("isActive", isActive);
+		Object actDeactRes = Constants.getRestTemplate().postForObject(Constants.url + "/activeInActiveCustomerById",
+				map, Object.class);
+
+		ObjectMapper objMapper = new ObjectMapper();
+
+		Info info = objMapper.convertValue(actDeactRes, Info.class);
+
+		if (info.isError() == false) {
+			//session.setAttribute("successMsg", info.getMsg());
+		} else {
+			//session.setAttribute("errorMsg", info.getMsg());
+		}
+
+		return "redirect:/showAddCustomerPage";
+	}
 }

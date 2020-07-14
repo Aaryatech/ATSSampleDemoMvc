@@ -1,5 +1,7 @@
 package com.ats.docdemo.bill_model;
 
+import java.util.List;
+
 
 //Author-Sachin Handge
 //Created On-13-07-2020
@@ -8,7 +10,7 @@ package com.ats.docdemo.bill_model;
 
 public class BillHeader {
 
-	private Integer billId;
+	private int billId;
 	private String invoiceNo;
 	private Integer custId;
 	
@@ -24,13 +26,22 @@ public class BillHeader {
 	private Integer delStatus;
 	
 	private String exVar1;
-	private Integer exInt1;
+	private int exInt1;
+	
+	List<BillDetail> billDetailList; 
 	
 	
-	public Integer getBillId() {
+	
+	public List<BillDetail> getBillDetailList() {
+		return billDetailList;
+	}
+	public void setBillDetailList(List<BillDetail> billDetailList) {
+		this.billDetailList = billDetailList;
+	}
+	public int getBillId() {
 		return billId;
 	}
-	public void setBillId(Integer billId) {
+	public void setBillId(int billId) {
 		this.billId = billId;
 	}
 	public String getInvoiceNo() {
@@ -96,10 +107,10 @@ public class BillHeader {
 	public void setExVar1(String exVar1) {
 		this.exVar1 = exVar1;
 	}
-	public Integer getExInt1() {
+	public int getExInt1() {
 		return exInt1;
 	}
-	public void setExInt1(Integer exInt1) {
+	public void setExInt1(int exInt1) {
 		this.exInt1 = exInt1;
 	}
 	

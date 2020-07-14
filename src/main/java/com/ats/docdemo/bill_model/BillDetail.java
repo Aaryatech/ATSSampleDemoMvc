@@ -7,8 +7,8 @@ package com.ats.docdemo.bill_model;
 
 public class BillDetail {
 
-	private Integer billDetailId;
-	private Integer billId;
+	private int billDetailId;
+	private int billId;
 	private String detailDttime;
 	
 	private Integer totalAmt;
@@ -19,19 +19,19 @@ public class BillDetail {
 	
 	private int delStatus;
 
-	public Integer getBillDetailId() {
+	public int getBillDetailId() {
 		return billDetailId;
 	}
 
-	public void setBillDetailId(Integer billDetailId) {
+	public void setBillDetailId(int billDetailId) {
 		this.billDetailId = billDetailId;
 	}
 
-	public Integer getBillId() {
+	public int getBillId() {
 		return billId;
 	}
 
-	public void setBillId(Integer billId) {
+	public void setBillId(int billId) {
 		this.billId = billId;
 	}
 

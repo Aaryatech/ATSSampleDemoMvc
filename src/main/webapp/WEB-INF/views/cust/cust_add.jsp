@@ -201,9 +201,10 @@
 							<p class="desc text-danger fontsize11">Note : * Fields are
 								mandatory.</p>
 
-							<table class="table datatable-fixed-left_custom table-bordered  table-hover   table-striped" width="100%">
+							<table class="table datatable-fixed-left_custom table-bordered table-hover table-striped" width="100%">
 								<thead>
 									<tr>
+									<th style="display: none;">Sr No</th>
 										<th>Sr No</th>
 										<th>Customer Name</th>
 										<th>Mobile</th>
@@ -215,11 +216,26 @@
 								<tbody>
 								<c:forEach items="${custList}" varStatus="count" var="custBean">
 									<tr>
+									<td style="display: none;">Sr No</td>
 									<td>${count.index+1}</td>
 									<td>${custBean.custName}</td>
 									<td>${custBean.custMob}</td>
 									<td>${custBean.creditDays}</td>
-									<td>${custBean.isActive}</td>
+									<td align="center">
+									<c:choose>
+												<c:when test="${custBean.isActive==1}">
+													<a
+														href="${pageContext.request.contextPath}/activeDeactiveCust?custId=${custBean.custId}&isActive=0"><i
+														class="fas fa-toggle-on" title="Active" style="color: green;"> </i> </a>
+												</c:when>
+												<c:otherwise>
+													<a
+														href="${pageContext.request.contextPath}/activeDeactiveCust?custId=${custBean.custId}&isActive=1"><i
+														class="fas fa-toggle-off" title="Deactive" style="color: red;"></i> </a>
+												</c:otherwise>
+											</c:choose></td>
+									
+									
 									
 									<td class="text-center">
 									<c:if test="${editAccess == 0}">

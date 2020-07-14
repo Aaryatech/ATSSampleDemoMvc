@@ -23,6 +23,7 @@
 
 <body>
 	<c:url value="/addBillDetail" var="addBillDetail"></c:url>
+	<c:url value="/getBillDetailForEdit" var="getBillDetailForEdit"></c:url>
 
 	<!-- Main navbar -->
 	<jsp:include page="/WEB-INF/views/include/header.jsp"></jsp:include>
@@ -68,12 +69,17 @@
 							<div class="card-body">
 								<jsp:include page="/WEB-INF/views/include/response_msg.jsp"></jsp:include>
 								<form
-									action="${pageContext.request.contextPath}/submitCustAddForm"
+									action="${pageContext.request.contextPath}/submitAddBillPage"
 									id="submitInsert" method="post">
 									<input type="hidden" value="${cust.custId}" id="custId"
 										name="custId">
 										<input type="hidden" value="0" id="key"
 										name="key">
+											<input type="hidden" value="0" id="isEdit"
+										name="isEdit">
+										<input type="hidden" value="0" id="row_count"
+										name="row_count">
+										
 									<div class="form-group row">
 										<label
 											class="col-form-label text-info font-weight-bold col-lg-2 float"
@@ -109,13 +115,13 @@
 									<div class="form-group row">
 										<label
 											class="col-form-label text-info font-weight-bold col-lg-2 float"
-											for="tot_items">Total Items<span class="text-danger">*
+											for="tot_items">Total Quantity<span class="text-danger">*
 										</span>:
 										</label>
 										<div class="col-lg-2 float">
 											<input type="text"
 												class="form-control maxlength-badge-position numbersOnly"
-												 placeholder="Enter Total Items"
+												 placeholder="Enter Item Quantity"
 												id="tot_items" maxlength="3" name="tot_items"
 												autocomplete="off" onchange="trim(this)"> <span
 												class="validation-invalid-label" id="error_tot_items"
@@ -195,14 +201,14 @@
 											<tr>
 												<th>Sr No</th>
 												<th>Work Desc</th>
-												<th>Total Item</th>
+												<th>Total Qty</th>
 												<th>Rate</th>
 												<th>Total</th>
 												<th>Actions</th>
 											</tr>
 										</thead>
 										<tbody>
-											<c:forEach items="${custList}" varStatus="count"
+											<%-- <c:forEach items="${custList}" varStatus="count"
 												var="custBean">
 												<tr>
 													<td>${count.index+1}</td>
@@ -230,9 +236,29 @@
 															class="icon-trash"></i></a></td>
 
 												</tr>
-											</c:forEach>
+											</c:forEach> --%>
 										</tbody>
 									</table>
+										<span class="alert bg-danger text-white alert-styled-left" style="display: none;" id="error_table">Please add at least one record !! </span>				
+									
+									
+									<div class="form-group row mb-0">
+										<div style="margin: 0 auto;">
+
+											<button type="submit" data-popup="tooltip" data-original-title="Save Form"	 class="btn blue_btn ml-3 legitRipple"
+												id="submtbtn">
+												Submit <i class="icon-paperplane ml-2"></i>
+											</button>
+
+
+											<%-- <a href="${pageContext.request.contextPath}/showBankList"><button
+													type="button" class="btn btn-light">
+													<i class="${sessionScope.cancelIcon}" aria-hidden="true"></i>
+													Back
+												</button></a> --%>
+										</div>
+									</div>
+							
 
 								</form>
 							</div>
@@ -263,59 +289,51 @@
 			function() {
 				$("#loader").show();
 				var rowCount = $("#bill_detail_table").find("tbody>tr").length;
-				
+				var isEdit=document.getElementById("isEdit").value;
 				var key=document.getElementById("key").value;
 				var rate=document.getElementById("item_rate").value;
 				var desc=document.getElementById("item_desc").value;
 				var qty=document.getElementById("tot_items").value;
 				var itemTotal=(parseInt(rate)* parseInt(qty));
+				document.getElementById("item_total").value=itemTotal;
 				
 				var buttonValue=1;
-				
+				//alert(key)
 				$.getJSON(
 						'${addBillDetail}',
 						{
+							
 							rate : rate,
 							desc : desc,
 							qty : qty,
 							itemTotal : itemTotal,
 							key : key,
 							buttonValue : buttonValue,
+							isEdit: isEdit,
 							ajax : 'true',
 						},
 						function(data) {
 							//alert(JSON.stringify(data));
 						if(data.error==false){
+						    document.getElementById("key").value=0;
+							document.getElementById("item_rate").value=null;
+							document.getElementById("item_desc").value=null;
+							document.getElementById("tot_items").value=null;
+							document.getElementById("item_total").value=null;
+							document.getElementById("isEdit").value=0;
 							appendTableData(JSON.parse(data.responseObject1));
 
 						}else{
 							$("#loader").hide();
 						}
 						})
-						
 			})
+			
 			function appendTableData(data){
-//alert(data)
-		/* if(data==null){
-			document.getElementById("submitButton").disabled=true;
-		}
-		
-		
-		 document.getElementById("work_id").value="";
-		
-		document.getElementById("work_pages").value="";
-		document.getElementById("page_rate").value="";
-		document.getElementById("work_paid_amt").value="";
-		document.getElementById("work_file").value="";
-		document.getElementById("work_pend_amt").value="";
-		document.getElementById("work_amt").value="";
-		document.getElementById("work_remark").value="";
-		document.getElementById("work_disc_amt").value=""; */
-		
 		var dataTable = $('#bill_detail_table')
 				.DataTable();
 		dataTable.clear().draw();
-
+		 document.getElementById("row_count").value=data.length;
 		$
 				.each(
 						data,
@@ -341,12 +359,9 @@
 									.draw();
 						}); 
 		var rowCount = $("#bill_detail_table").find("tbody>tr").length;
-		
-	/* 	
-		document.getElementById("submitButton").disabled=false;
-		//$('#submitButton').prop('disabled', false);
-		document.getElementById("loader").style="display:none"; */
+
 		$("#loader").hide();
+		$("#item_total").focus();
 	}
 	
 	 
@@ -362,7 +377,7 @@
 					ajax : 'true',
 				},
 				function(data) {
-					alert(JSON.stringify(data));
+					//alert(JSON.stringify(data));
 				if(data.error==false){
 					appendTableData(JSON.parse(data.responseObject1));
 					document.getElementById("key").value=0;
@@ -376,34 +391,32 @@
 	}
 	function callEdit(a,key){
 		document.getElementById("key").value=key;
-		
-		
+		document.getElementById("isEdit").value=1;
+		$("#loader").show();
+		$.getJSON(
+				'${getBillDetailForEdit}',
+				{
+					key : key,
+					ajax : 'true',
+				},
+				function(data) {
+					//alert(JSON.stringify(data));
+				if(data.error==false){
+					
+					var billDetail=JSON.parse(data.responseObject1);
+						document.getElementById("item_rate").value=billDetail.rate;
+						document.getElementById("item_desc").value=billDetail.workDesc;
+						document.getElementById("tot_items").value=billDetail.qty;
+						document.getElementById("item_total").value=billDetail.totalAmt;
+						$("#loader").hide();
+				}else{
+					$("#loader").hide();
+					document.getElementById("isEdit").value=0;
+
+				}
+				})
 	}
 			
-	 		// Overlay callback
-		$("#data_view_button")
-				.click(
-						function() {
-							//blockThis();
-
-							$
-									.getJSON(
-											'${getSingleCategory}',
-											{
-												ajax : 'true',
-											},
-											function(data) {
-												//document.getElementById("g_name").innerHTML=" Category Name:" +data.catName;
-												//document.getElementById("ifsc_code").innerHTML=" Bank Name: Bank of India";
-												document
-														.getElementById("mod_title").innerHTML = "Appending Ajax Return Data ";
-												document
-														.getElementById("f_name").value = data.catName;
-												document
-														.getElementById("l_name").value = "Thakur";
-												//unBlock();
-											})
-						})
 	</script>
 	<script>
 		$(document)
@@ -416,30 +429,28 @@
 												var isError = false;
 												var errMsg = "";
 
-												if (!$("#cust_name").val()) {
+												if (!$("#cust_id").val()) {
 													isError = true;
 													$("#error_custName").show()
 												} else {
 													$("#error_custName").hide()
 												}
 
-												if (!$("#cust_mob").val()
-														|| !validateMobile($(
-																"#cust_mob")
-																.val())) {
-													isError = true;
-													$("#error_mob").show()
-												} else {
-													$("#error_mob").hide()
-												}
 
-												if (!$("#cred_days").val()) {
+												if (!$("#bill_date").val()) {
 													isError = true;
-													$("#error_credDays").show()
+													$("#error_date").show()
 												} else {
-													$("#error_credDays").hide()
+													$("#error_date").hide()
 												}
-
+												var rowCount =$("#row_count").val();
+												if(parseInt(rowCount)<1){
+												isError = true;
+												$("#error_table").show()
+												}else{
+												$("#error_table").hide()
+												}
+											
 												if (!isError) {
 													var x = true;
 													if (x == true) {
