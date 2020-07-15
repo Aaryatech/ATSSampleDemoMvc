@@ -9,8 +9,7 @@
 <body>
 <marquee behavior="scroll" bgcolor="orange">Coming Soon</marquee>
 
-<h2>Registration Form</h2>
-<h2>Login Form</h2>
+<h2>Login</h2>
 <h2>Forgot Password</h2>
 <h2>Change Password</h2>
 

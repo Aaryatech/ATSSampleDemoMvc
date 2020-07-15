@@ -95,7 +95,7 @@
 					<ul class="media-list">
 						<li class="media">
 							<div class="mr-3">
-								<img src="${imgUrl}/${sessionScope.userObj.empPhoto}" width="36"
+								<img src="${imgUrl}${sessionScope.userObj}" width="36"
 									height="36" class="rounded-circle" alt="">
 							</div>
 							<div class="media-body">

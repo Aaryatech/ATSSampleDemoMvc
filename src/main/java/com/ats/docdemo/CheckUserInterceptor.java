@@ -42,7 +42,7 @@ public class CheckUserInterceptor extends HandlerInterceptorAdapter {
 			Object userObj = null;
 			try {
 
-				userObj = (Object) session.getAttribute("userInfo");
+				userObj = (Object) session.getAttribute("userObj");
 
 			} catch (Exception e) {
 				// TODO: handle exception

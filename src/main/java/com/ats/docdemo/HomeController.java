@@ -1,6 +1,8 @@
 package com.ats.docdemo;
 
 import java.io.IOException;
+import java.math.BigInteger;
+import java.security.MessageDigest;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -10,6 +12,7 @@ import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,6 +31,7 @@ import com.ats.docdemo.common.CommonUtility;
 import com.ats.docdemo.common.Constants;
 import com.ats.docdemo.common.Info;
 import com.ats.docdemo.common.VpsImageUpload;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * Handles requests for the application home page.
@@ -41,20 +45,19 @@ public class HomeController {
 	 * Simply selects the home view to render by returning its name.
 	 */
 	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public String home(Locale locale, Model model) {
+	public String home(Locale locale, Model model, HttpServletRequest request) {
 		logger.info("Welcome home! The client locale is {}.", locale);
+		System.err.println("req /" + request.toString());
 
 		AssetCategory[] assetArr = Constants.getRestTemplate().getForObject(Constants.url1 + "/getAllAssetCategory",
 				AssetCategory[].class);
 		List<AssetCategory> assetCatList = new ArrayList<AssetCategory>(Arrays.asList(assetArr));
 		System.err.println("cat List " + assetCatList.toString());
 
-
 		model.addAttribute("catId", 28);
 		model.addAttribute("assetCatList", assetCatList);
-		
-		
-		MultiValueMap<String, Object> map= new LinkedMultiValueMap<>();
+
+		MultiValueMap<String, Object> map = new LinkedMultiValueMap<>();
 		map.add("companyId", 1);
 		Location[] location = Constants.getRestTemplate().postForObject(Constants.url1 + "/getLocationList", map,
 				Location[].class);
@@ -62,8 +65,83 @@ public class HomeController {
 		List<Location> locationList = new ArrayList<Location>(Arrays.asList(location));
 		model.addAttribute("locationIds", "5,9,2,7");
 		model.addAttribute("locationList", locationList);
-		return "3_col_page";
-		//return "dataTableDemo";
+		return "login_pages/login";
+		// return "dataTableDemo";
+	}
+
+	@RequestMapping(value = "/loginProcess", method = RequestMethod.POST)
+	public String loginProcess(HttpServletRequest request, HttpServletResponse response, Model model) {
+		System.err.println("req loginProcess " + request.toString());
+		String mav = new String();
+		HttpSession session = request.getSession();
+
+		try {
+			String token = request.getParameter("token");
+			String key = (String) session.getAttribute("generatedKey");
+
+			MultiValueMap<String, Object> map = new LinkedMultiValueMap<String, Object>();
+			
+			if (token.trim().equals(key.trim())) {
+
+				System.err.println("Key matched");
+			}
+			
+			String name = request.getParameter("username");
+			String password = request.getParameter("password");
+
+			if (name.equalsIgnoreCase("") || password.equalsIgnoreCase("") || name == null || password == null) {
+
+				mav = "redirect:/";
+				session.setAttribute("errorMsg", "Login Failed - User name or password can not be null");
+			} else {
+				
+				MessageDigest md = MessageDigest.getInstance("MD5");
+				byte[] messageDigest = md.digest(password.getBytes());
+				BigInteger number = new BigInteger(1, messageDigest);
+
+				String hashtext = number.toString(16);
+
+				map.add("userName", name);
+				// map.add("pass", hashtext);
+				map.add("pass", password);
+				
+				Object checkLogin = Constants.getRestTemplate()
+						.postForObject(Constants.url + "checkUserNamePassForLogin", map, Object.class);
+				ObjectMapper objMapper = new ObjectMapper();
+
+				Info info = objMapper.convertValue(checkLogin, Info.class);
+
+				if (info.isError() == false) {
+
+					User userObj = objMapper.readValue(info.getResponseObject1(), User.class);
+
+					if (userObj.getIsEnrolled() == 0) {
+						// new User First time login, send to change for password.
+						session.setAttribute("userId", userObj.getUserId());
+						session.setAttribute("userObj", userObj);
+						mav = "redirect:/changePassPage";
+					} else {
+						// existing user login send to welcome page/dash board.
+						session.setAttribute("userId", userObj.getUserId());
+						session.setAttribute("userObj", userObj);
+						mav = "redirect:/getPage/3";
+					}
+				} else {
+					// Login Failed
+					// show msg in jsp
+
+					mav = "redirect:/";
+					session.setAttribute("errorMsg", info.getMsg());
+
+				}
+			}
+		} catch (Exception e) {
+			mav = "redirect:/";
+			session.setAttribute("errorMsg", "Login Failed");
+			e.printStackTrace();
+		}
+
+		return mav;
 	}
 
 	@RequestMapping(value = "/getCatList", method = RequestMethod.GET)
@@ -79,7 +157,6 @@ public class HomeController {
 		return jsonString;
 	}
 
-	
 	@RequestMapping(value = "/getSingleCategory", method = RequestMethod.GET)
 	public @ResponseBody String getSingleCategory(Locale locale, Model model) {
 		System.err.println("Ajax call");
@@ -92,10 +169,9 @@ public class HomeController {
 		System.err.println("jsonString " + jsonString);
 		return jsonString;
 	}
-	
-	
+
 	@RequestMapping(value = "/getPage/{pageNumber}", method = RequestMethod.GET)
-	public String home(Locale locale, Model model, @PathVariable  int pageNumber) {
+	public String home(Locale locale, Model model, @PathVariable int pageNumber) {
 		logger.info("Welcome home! The client locale is {}.", locale);
 
 		Date date = new Date();
@@ -107,18 +183,16 @@ public class HomeController {
 		} else if (pageNumber == 2) {
 			return "2_col_page";
 		} else {
-			
+
 			AssetCategory[] assetArr = Constants.getRestTemplate().getForObject(Constants.url1 + "/getAllAssetCategory",
 					AssetCategory[].class);
 			List<AssetCategory> assetCatList = new ArrayList<AssetCategory>(Arrays.asList(assetArr));
 			System.err.println("cat List " + assetCatList.toString());
 
-
 			model.addAttribute("catId", 28);
 			model.addAttribute("assetCatList", assetCatList);
-			
-			
-			MultiValueMap<String, Object> map= new LinkedMultiValueMap<>();
+
+			MultiValueMap<String, Object> map = new LinkedMultiValueMap<>();
 			map.add("companyId", 1);
 			Location[] location = Constants.getRestTemplate().postForObject(Constants.url1 + "/getLocationList", map,
 					Location[].class);
@@ -126,7 +200,7 @@ public class HomeController {
 			List<Location> locationList = new ArrayList<Location>(Arrays.asList(location));
 			model.addAttribute("locationIds", "5,9,2,7");
 			model.addAttribute("locationList", locationList);
-			
+
 			return "3_col_page";
 		}
 	}
@@ -174,31 +248,46 @@ public class HomeController {
 
 	}
 
-
 	@RequestMapping(value = "/{showAllControlPage}", method = RequestMethod.GET)
-	public String showAllControlPage(Locale locale, Model model,HttpServletRequest request, HttpServletResponse response) {
-System.err.println("Heii");
-String x=null;
-try {
-		Date date = new Date();
-		DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG, locale);
-		String formattedDate = dateFormat.format(date);
-		
-		model.addAttribute("serverTime", formattedDate);
-		
-		 x="moh_pages/moh_all_control";
-}catch (Exception e) {
-	e.printStackTrace();
-}
-			return x;
-			
+	public String showAllControlPage(Locale locale, Model model, HttpServletRequest request,
+			HttpServletResponse response) {
+		System.err.println("Heii");
+		String x = null;
+		try {
+			Date date = new Date();
+			DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG, locale);
+			String formattedDate = dateFormat.format(date);
+
+			model.addAttribute("serverTime", formattedDate);
+
+			x = "moh_pages/moh_all_control";
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return x;
+
 	}
-	
-	
+
 	@RequestMapping(value = "/showTables", method = RequestMethod.GET)
 	public String showTables(Locale locale, Model model) {
 
 		return "table_pages/demo_tables";
-		//return "dataTableDemo";
+		// return "dataTableDemo";
 	}
+
+	@RequestMapping(value = "/logout", method = RequestMethod.GET)
+	public String logout(HttpSession session) {
+
+		session.invalidate();
+		return "redirect:/";
+	}
+
+	@RequestMapping(value = "/sessionTimeOut", method = RequestMethod.GET)
+	public String sessionTimeOut(HttpSession session) {
+		System.out.println("User Logout");
+
+		session.invalidate();
+		return "redirect:/";
+	}
+
 }
