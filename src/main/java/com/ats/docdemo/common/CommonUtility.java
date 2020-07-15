@@ -453,8 +453,18 @@ public class CommonUtility {
 //#21
 	// Return String in Lower case for given String parameter
 	public static String toLowerCase(String str) {
-		
+
 		return str.toLowerCase();
-		
+
+	}
+
+	// #21
+	// Return String in Lower case for given String parameter
+	public static long getCurrentTimeStamp() {
+
+		Calendar cal = Calendar.getInstance();
+
+		return cal.getTimeInMillis();
+
 	}
 }
