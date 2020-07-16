@@ -458,9 +458,9 @@ public class CommonUtility {
 
 	}
 
-	// #21
-	// Return String in Lower case for given String parameter
-	public static long getCurrentTimeStamp() {
+	// #22 Anmol
+	// Return long value of current time ie. getTimeInMillis
+	public static long getCurrentTimeStampInLong() {
 
 		Calendar cal = Calendar.getInstance();
 
