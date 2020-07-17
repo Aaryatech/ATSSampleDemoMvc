@@ -32,6 +32,7 @@ import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.core.ParameterizedTypeReference;
@@ -43,6 +44,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
+import com.ats.docdemo.CheckUserInterceptor;
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -343,7 +345,7 @@ public class CommonUtility {
 			final String emailSMTPserver = "smtp.gmail.com";
 			final String mailStoreType = "imaps";
 			String username = "atsinfosoft@gmail.com";
-			String password = "atsinfosoft@123";
+			String password = "atsinfosoft#123";
 
 			System.out.println("username" + username);
 			System.out.println("password" + password);
@@ -374,7 +376,6 @@ public class CommonUtility {
 
 				Transport.send(mimeMessage);
 			} catch (SMTPSendFailedException e) {
-				System.err.println("ANNNN");
 				System.err.println(e.getValidUnsentAddresses().toString());
 				info.setError(true);
 				info.setMsg("email_exce");
@@ -461,10 +462,9 @@ public class CommonUtility {
 	// #22 Anmol
 	// Return long value of current time ie. getTimeInMillis
 	public static long getCurrentTimeStampInLong() {
-
 		Calendar cal = Calendar.getInstance();
 
 		return cal.getTimeInMillis();
-
 	}
+	
 }

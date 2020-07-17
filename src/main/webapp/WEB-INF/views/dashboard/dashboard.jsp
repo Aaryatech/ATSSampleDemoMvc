@@ -17,12 +17,15 @@
 	float: right;
 }
 </style>
+				 <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
 <jsp:include page="/WEB-INF/views/include/metacssjs.jsp"></jsp:include>
 </head>
 
 <body>
 	<c:url value="/getSingleCategory" var="getSingleCategory"></c:url>
+		<c:url value="/getDashboardGraph" var="getDashboardGraph"></c:url>
+	
 
 	<!-- Main navbar -->
 	<jsp:include page="/WEB-INF/views/include/header.jsp"></jsp:include>
@@ -53,7 +56,7 @@
 		<div class="content-wrapper">
 
 			<!-- Page header -->
-			<div class="page-header page-header-light">
+			<!-- <div class="page-header page-header-light">
 				<div class="page-header-content header-elements-md-inline">
 					<div class="page-title d-flex">
 						<h4><i class="icon-arrow-left52 mr-2"></i> <span class="font-weight-semibold">Home</span> - Dashboard</h4>
@@ -112,7 +115,7 @@
 						</div>
 					</div>
 				</div>
-			</div>
+			</div> -->
 			<!-- /page header -->
 
 
@@ -120,6 +123,47 @@
 			<div class="content">
 
 				<!-- Main charts -->
+				
+					<div class="row">
+				<div class="col-xl-12">
+				 <div id="graph1" style="width: 100%; height: 500px;" ></div>
+				</div>
+				</div>
+				<div class="row"> </div>
+				<div class="row">
+				<div class="col-xl-12">
+				 <div id="graph2" style="width: 100%; height: 500px;"></div>
+				</div>
+				</div>
+				<div class="row"> </div>
+				<div class="row">
+				<div class="col-xl-12">
+				 <div id="graph3" style="width: 100%; height: 500px;"></div>
+				</div>
+				</div>
+				
+				
+				<!-- <div class="row">
+				<div class="col-xl-12">
+				 <div id="graph4" style="width: 100%; height: 500px;"></div>
+				</div>
+				</div>
+				
+				<div class="row">
+				<div class="col-xl-12">
+				 <div id="graph5" style="width: 100%; height: 500px;"></div>
+				</div>
+				</div> -->
+				
+				
+				<div class="row">
+				<div class="col-xl-12">
+				 <div id="chart_div" style="width: 100%; height: 500px;"></div>
+				</div>
+				</div>
+				<div class="row">
+				    <div id="piechart" style="width: 100%; height: 500px;"></div>
+				</div>
 				<div class="row">
 					<div class="col-xl-7">
 
@@ -523,6 +567,237 @@
 
 	</div>
 	<!-- /page content -->
+	<script>
+		$(function() {
+			"use strict";
+  
+			 
+ 
+				$.getJSON('${getDashboardGraph}',
+
+				{
+
+					ajax : 'true'
+
+				}, function(data) {
+
+					google.charts.load('current', {
+						'packages' : [ 'corechart' ]
+					});
+					google.charts.setOnLoadCallback(drawChart);
+
+					function drawChart() {
+
+						var dataTable = new google.visualization.DataTable();
+
+						dataTable.addColumn('string', 'academic year'); // Implicit domain column.
+
+						dataTable.addColumn('number', 'Registred Institutes');
+						dataTable.addColumn('number', 'NAAC Accredited');
+						
+
+						$.each(data.naacRes, function(key, dt) {
+
+							dataTable
+									.addRows([
+
+									[ dt.academicYear, dt.count1,
+											dt.count2 ]
+
+									]);
+
+						})
+
+						/* slantedTextAngle: 60 */
+						var options = {
+							hAxis : {
+								title : "YEAR",
+								textPosition : 'in',
+								slantedText : false,
+								
+
+							},
+							vAxis : {
+								title : 'VALUE',
+								minValue : 0,
+								viewWindow : {
+									min : 0
+								},
+								format : '0',
+							},
+							//colors : [ 'blue', 'green','orange' ],
+							fontSize :14,
+							fontName : 'Arial',
+							theme : 'maximized',
+
+
+								//annotations.alwaysOutside	
+						};
+						var chart = new google.visualization.ColumnChart(
+								document.getElementById('graph1'));
+
+						chart.draw(dataTable, options);
+
+						//2nd graph
+
+						dataTable = new google.visualization.DataTable();
+
+						dataTable.addColumn('string', 'academic year'); // Implicit domain column.
+						dataTable.addColumn('number', 'Registred Institute');
+						dataTable.addColumn('number', 'NBA Applicable');
+						dataTable.addColumn('number', 'NBA Accrediated');
+						
+						
+
+						$.each(data.nbaRes, function(key, dt) {
+
+							dataTable
+									.addRows([
+
+										[ dt.academicYear, dt.count1,
+											dt.count2 ,dt.count3 ]
+
+									]);
+
+						})
+
+						chart = new google.visualization.ColumnChart(document
+								.getElementById('graph2'));
+
+						chart.draw(dataTable, options);  
+						
+						//3rd graph
+						
+						dataTable = new google.visualization.DataTable();
+
+						dataTable.addColumn('string', 'academic year'); // Implicit domain column.
+						dataTable.addColumn('number', 'Registred Institute');
+						dataTable.addColumn('number', 'NIRF Accrediated'); 
+						
+
+						$.each(data.nirfcRes, function(key, dt) {
+
+							dataTable
+									.addRows([
+
+										[ dt.academicYear, dt.count1 ,dt.count2 ]
+
+									]);
+
+						})
+
+						chart = new google.visualization.ColumnChart(document
+								.getElementById('graph3'));
+
+						chart.draw(dataTable, options);  
+						
+						/* //4th graph
+						
+						dataTable = new google.visualization.DataTable();
+
+						dataTable.addColumn('string', 'academic year'); // Implicit domain column.
+						dataTable.addColumn('number', 'Registred Institute');
+						dataTable.addColumn('number', 'THE Accrediated'); 
+						
+
+						$.each(data.theRes, function(key, dt) {
+
+							dataTable
+									.addRows([
+
+										[ dt.academicYear, dt.count1 ,dt.count2 ]
+
+									]);
+
+						})
+
+						chart = new google.visualization.ColumnChart(document
+								.getElementById('graph4'));
+
+						chart.draw(dataTable, options);  
+						
+						//5th graph
+						
+						dataTable = new google.visualization.DataTable();
+
+						dataTable.addColumn('string', 'academic year'); // Implicit domain column.
+						dataTable.addColumn('number', 'Registred Institute');
+						dataTable.addColumn('number', 'Autonomous Institute'); 
+						
+
+						$.each(data.autonomousRes, function(key, dt) {
+
+							dataTable
+									.addRows([
+
+										[ dt.academicYear, dt.count1 ,dt.count2 ]
+
+									]);
+
+						})
+
+						chart = new google.visualization.ColumnChart(document
+								.getElementById('graph5'));
+
+						chart.draw(dataTable, options); */
+ 
+					}
+
+				});
+			 
+		});
+	</script>
+	    <script type="text/javascript">
+      google.charts.load('current', {'packages':['corechart']});
+      google.charts.setOnLoadCallback(drawVisualization);
+
+      function drawVisualization() {
+
+         var data = google.visualization.arrayToDataTable([
+          ['Month', 'Bolivia', 'Ecuador', 'Madagascar', 'Papua New Guinea', 'Rwanda', 'Average'],
+          ['2004/05',  165,      938,         522,             998,           450,      614.6],
+          ['2005/06',  135,      1120,        599,             1268,          288,      682],
+          ['2006/07',  157,      1167,        587,             807,           397,      623],
+          ['2007/08',  139,      1110,        615,             968,           215,      609.4],
+          ['2008/09',  136,      691,         629,             1026,          366,      569.6]
+        ]);
+
+         
+            var options = {
+              title : 'Monthly Coffee Production by Country',
+              vAxis: {title: 'Cups'},
+              hAxis: {title: 'Month'},
+              seriesType: 'bars',
+              series: {5: {type: 'line'}}        };
+
+            var chart = new google.visualization.ComboChart(document.getElementById('chart_div'));
+            chart.draw(data, options);
+      }
+    </script>
+      <script type="text/javascript">
+      google.charts.load('current', {'packages':['corechart']});
+      google.charts.setOnLoadCallback(drawChart);
+
+      function drawChart() {
+
+        var data = google.visualization.arrayToDataTable([
+          ['Task', 'Hours per Day'],
+          ['Work',     11],
+          ['Eat',      2],
+          ['Commute',  2],
+          ['Watch TV', 2],
+          ['Sleep',    7]
+        ]);
+
+        var options = {
+          title: 'My Daily Activities'
+        };
+
+        var chart = new google.visualization.PieChart(document.getElementById('piechart'));
+
+        chart.draw(data, options);
+      }
+    </script>
 	<script>
 		
 		//

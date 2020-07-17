@@ -97,7 +97,7 @@ body1 {
 		</div>
 		
 		<!-- login-form -->
-		<form id="form-login" action="validateOTP" method="post">
+		<form id="form-login" action="${pageContext.request.contextPath}/validateOTP" method="post">
 		<%
 											UUID uuid = UUID.randomUUID();
 											MessageDigest md = MessageDigest.getInstance("MD5");
@@ -129,6 +129,7 @@ body1 {
 						src="${pageContext.request.contextPath}/resources/global_assets/images/logo_white.png"
 						alt="">
 					<h2 class="login_head_one">OTP Validation</h2>
+					
 					<div class="clr"></div>
 					<!-- class="login-form" -->
 					
@@ -139,10 +140,13 @@ body1 {
 							session.removeAttribute("errorPassMsg1");
 						%>
 					</c:if>
+					
+																<span id="countdown" style="color: red; font-size: 16px;"></span>	
+					
 						<div
 							class="form-group form-group-feedback form-group-feedback-left">
-							<input type="text" id="otp" name="otp"
-								class="form-control form_lgn" placeholder="Enter OTP "
+							<input type="text" id="otp" name="otp" required 
+								class="form-control form_lgn numbersOnly" placeholder="Enter OTP "
 								style="border-radius: 5px;">
 							<div class="form-control-feedback" style="padding-left: 10px;">
 								<i class="icon-envelop text-muted" ></i>
@@ -150,10 +154,9 @@ body1 {
 						</div>
 						
 						<div class="form-group" style="margin:0;">
-							<button type="button" onclick="subPassForForm()" class="buttonlogin">Submit</button>
+							<button type="submit" id="wp-submit" class="buttonlogin">Submit</button>
 							<div class="forgot_pass" style="text-align: left;"><a href="${pageContext.request.contextPath}/">Back</a></div>
 						</div>
-											<span id="countdown" style="color: red; font-size: 12px;"></span>	
 						
 				</div>
 				<div class="clr"></div>
@@ -186,7 +189,9 @@ function showForgotWindow(){
 	    	document.getElementById("wp-submit").disabled=true;	
 	  }
 	}, 1000);
-	
+	jQuery('.numbersOnly').keyup(function() {
+		this.value = this.value.replace(/[^0-9\.]/g, '');
+	});
 	</script>
 </body>
 

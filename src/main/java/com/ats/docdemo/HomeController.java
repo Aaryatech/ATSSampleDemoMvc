@@ -46,13 +46,13 @@ public class HomeController {
 	 */
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home(Locale locale, Model model, HttpServletRequest request) {
-		logger.info("Welcome home! The client locale is {}.", locale);
-		System.err.println("req /" + request.toString());
+		//logger.info("Welcome home! The client locale is {}.", locale);
+		//System.err.println("req /" + request.toString());
 
 		AssetCategory[] assetArr = Constants.getRestTemplate().getForObject(Constants.url1 + "/getAllAssetCategory",
 				AssetCategory[].class);
 		List<AssetCategory> assetCatList = new ArrayList<AssetCategory>(Arrays.asList(assetArr));
-		System.err.println("cat List " + assetCatList.toString());
+		//System.err.println("cat List " + assetCatList.toString());
 
 		model.addAttribute("catId", 28);
 		model.addAttribute("assetCatList", assetCatList);
@@ -102,8 +102,8 @@ public class HomeController {
 				String hashtext = number.toString(16);
 
 				map.add("userName", name);
-				// map.add("pass", hashtext);
-				map.add("pass", password);
+				map.add("pass", hashtext);
+				//map.add("pass", password);
 				
 				Object checkLogin = Constants.getRestTemplate()
 						.postForObject(Constants.url + "checkUserNamePassForLogin", map, Object.class);
@@ -117,15 +117,14 @@ public class HomeController {
 
 					if (userObj.getIsEnrolled() == 0) {
 						// new User First time login, send to change for password.
-						session.setAttribute("userId", userObj.getUserId());
-						session.setAttribute("userObj", userObj);
 						mav = "redirect:/changePassPage";
 					} else {
 						// existing user login send to welcome page/dash board.
-						session.setAttribute("userId", userObj.getUserId());
-						session.setAttribute("userObj", userObj);
+					
 						mav = "redirect:/getPage/3";
 					}
+					session.setAttribute("userId", userObj.getUserId());
+					session.setAttribute("userObj", userObj);
 				} else {
 					// Login Failed
 					// show msg in jsp

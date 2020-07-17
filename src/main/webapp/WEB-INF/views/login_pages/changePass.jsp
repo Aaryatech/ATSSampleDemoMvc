@@ -142,7 +142,7 @@ body1 {
 					<div
 						class="form-group form-group-feedback form-group-feedback-left">
 						<input type="text" id="newPass" name="newPass" onkeyup="return passwordChanged();"
-							class="form-control form_lgn" placeholder="Enter new Password "
+							class="form-control form_lgn" required  placeholder="Enter new Password "
 							style="border-radius: 5px;">
 						<div class="form-control-feedback" style="padding-left: 10px;">
 							<i class="icon-envelop text-muted"></i>
@@ -152,16 +152,17 @@ body1 {
 					style="display: none;">This field is required.</span>
 					<div
 						class="form-group form-group-feedback form-group-feedback-left">
-						<input type="text" id="newConfPass" name="newConfPass"
+						<input type="text" id="newConfPass" name="newConfPass" required
 							class="form-control form_lgn" placeholder="Confirm password"
 							style="border-radius: 5px;">
 						<div class="form-control-feedback" style="padding-left: 10px;">
 							<i class="icon-envelop text-muted"></i>
 						</div>
 					</div>
-					<span class="form-text text-muted">contain minimum 8
+					<span class="form-text text-muted"  style="background-color: white;">contain minimum 8
 													characters,one capital character,one small character, one number, one
 													special symbol</span>
+													<br>
 
 					<div class="form-group" style="margin: 0;">
 						<button type="button" onclick="subPassForForm()"

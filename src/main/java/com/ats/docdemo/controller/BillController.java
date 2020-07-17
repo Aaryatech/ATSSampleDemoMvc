@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.ats.docdemo.CheckUserInterceptor;
 import com.ats.docdemo.bill_model.BillDetail;
 import com.ats.docdemo.bill_model.BillHeader;
 import com.ats.docdemo.bill_model.Setting;
@@ -82,14 +83,19 @@ public class BillController {
 	@RequestMapping(value = "/addBillDetail", method = RequestMethod.GET)
 	public @ResponseBody Object addBillDetail(HttpServletRequest req, HttpServletResponse res) {
 		Info info = new Info();
+
 		try {
-			info.setIsSessionAlive(1);
 			HttpSession session = req.getSession();
-			if (session.isNew()) {
-				info.setMsg("Session Timed Out !");
+
+			if (session.getAttribute("userObj").equals(null)) {
+				System.err.println("in Session Closed");
 				info.setIsSessionAlive(0);
+				info.setMsg("Session Timed Out !");
 				info.setError(true);
 				return info;
+			} else {
+				System.err.println("in Session Open");
+				info.setIsSessionAlive(1);
 			}
 
 			int buttonValue = 0;
@@ -346,4 +352,36 @@ public class BillController {
 		return "bill/bill_list_page";
 
 	}
+
+	@RequestMapping(value = "/checkForSession", method = RequestMethod.GET)
+	public @ResponseBody Object checkForSession(HttpServletRequest req, HttpServletResponse res) {
+		Info info = new Info();
+		try {
+			HttpSession session = req.getSession();
+			Object obj = null;
+			try {
+				obj = session.getAttribute("userObj");
+			} catch (Exception e) {
+				obj = null;
+			}
+			if (obj==null) {
+				info.setError(true);
+				info.setIsSessionAlive(0);
+				info.setMsg("Session Expired !! Login again");
+			}
+			else {
+				info.setIsSessionAlive(1);
+				info.setMsg("Session Alive");
+				info.setError(false);
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			info.setMsg("Session Expired !! Login again");
+			info.setError(true);
+		}
+
+		return info;
+	}
+
 }
