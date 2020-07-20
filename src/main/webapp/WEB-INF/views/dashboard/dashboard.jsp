@@ -326,7 +326,7 @@
 								</div>
 
 								<div>
-									<a href="#" class="btn bg-indigo-300"><i class="icon-statistics mr-2"></i> View report</a>
+									<a href="${pageContext.request.contextPath}/custExcel/" class="btn bg-indigo-300"><i class="icon-statistics mr-2"></i> View Excel</a>
 								</div>
 							</div>
 						</div>
@@ -378,7 +378,7 @@
 								</div>
 
 								<div>
-									<a href="#" class="btn bg-teal-400"><i class="icon-statistics mr-2"></i> Report</a>
+									<a href="${pageContext.request.contextPath}/pdf?url=pdf/gernerateRelievingLetter/5/05-08-2020/06-08-2020/09-08-2020" class="btn bg-teal-400"><i class="icon-statistics mr-2"></i>PDF Report</a>
 								</div>
 							</div>
 
